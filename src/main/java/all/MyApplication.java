@@ -11,11 +11,11 @@ public class MyApplication {
     public static List<Manager> managers = new ArrayList<>(); // array of managers
     public static List<Ingredient> ingredients = new ArrayList<>(); // array of ingredients
     public static List<Supplier> suppliers = new ArrayList<>();
-    private List<CustomerProfile> customers = new ArrayList<>();// array of suppliers
-    private List<order> pendingOrders = new ArrayList<>();
-    private List<order> orderHistory = new ArrayList<>();
-    private List<order> allOrders = new ArrayList<>();
-    private List<meal> meals=new ArrayList<>();
+    private static List<CustomerProfile> customers = new ArrayList<>();// array of suppliers
+    private static final List<order> pendingOrders = new ArrayList<>();
+    private static final List<order> orderHistory = new ArrayList<>();
+    private static final List<order> allOrders = new ArrayList<>();
+    private static final List<meal> meals=new ArrayList<>();
 
 
     private String message;
@@ -469,7 +469,6 @@ public class MyApplication {
 
     }
 
-
     public void showAllAvailableMeals(CustomerProfile customer) {
         if (meals.isEmpty()) {
             System.out.println("❌ No meals available.");
@@ -503,6 +502,38 @@ public class MyApplication {
             System.out.println("⚠️ No meals match your allergy restrictions.");
         }
     }
+
+//    public void chefViewOrderHistory() {
+//        if (orderHistory.isEmpty()) {
+//            System.out.println("No customer order history available.");
+//            return;
+//        }
+//
+//       List<CustomerProfile> customers = new ArrayList<>(orderHistory.keySet());
+//        System.out.println("👤 Customers with orders:");
+//        for (int i = 0; i < customers.size(); i++) {
+//            System.out.printf("%d. %s\n", i + 1, customers.get(i).getName());
+//        }
+//
+//        Scanner scanner = new Scanner(System.in);
+//        System.out.print("Choose a customer to view their history: ");
+//        int choice = scanner.nextInt();
+//
+//        if (choice > 0 && choice <= customers.size()) {
+//            CustomerProfile selected = customers.get(choice - 1);
+//            List<meal> history = orderHistory.get(selected);
+//            System.out.println("📦 Order History for " + selected.getName() + ":");
+//           for (meal meal : history) {
+//                System.out.println(" - " + meal);
+//           }
+//        } else {
+//            System.out.println("Invalid choice.");
+//        }
+//    }
+//
+
+
+
 
 
 
@@ -575,4 +606,5 @@ public class MyApplication {
         }
     }
     }
+    //////////////////////////////////////////////////////
 }
