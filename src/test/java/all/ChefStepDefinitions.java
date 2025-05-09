@@ -5,6 +5,7 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.And;
 import org.junit.Assert;
+import org.junit.Assert.*;
 
 import java.util.List;
 
