@@ -33,6 +33,7 @@ public class Main {
                 continue; // Restart the loop
             }
 
+
             String role = app.getLoggedInUserRole();
 
             if (role.equalsIgnoreCase("chef")) {
