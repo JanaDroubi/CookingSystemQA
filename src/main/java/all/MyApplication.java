@@ -862,5 +862,8 @@ public class MyApplication {
                 .filter(order -> order.getCustomer().equals(customer))
                 .collect(Collectors.toList());
     }
+    public List<meal> getMeals() {
+        return new ArrayList<>(meals); // Return a copy to prevent external modification
+    }
 
 }

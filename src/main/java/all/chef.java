@@ -5,11 +5,12 @@ import java.util.List;
 
 public class chef extends Person {
 
-    private String expertise; // e.g., "grilling", "vegan"
+    private String expertise;
     private List<String> assignedTasks = new ArrayList<>();
+    private List<String> notifications = new ArrayList<>();
 
     public chef(String userName, String expertise, String pass, String role) {
-        super(userName,pass,role);
+        super(userName, pass, role);
         this.expertise = expertise;
     }
 
@@ -23,7 +24,9 @@ public class chef extends Person {
 
     public void assignTask(String task) {
         assignedTasks.add(task);
-        System.out.println("🔔 Task assigned to " + userName + ": " + task); //<- Notification
+        String message = "Task assigned: " + task;
+        notifications.add(message);
+        System.out.println("🔔 " + message + " to " + userName);
     }
 
     public int getTaskCount() {
@@ -31,6 +34,10 @@ public class chef extends Person {
     }
 
     public boolean isValid() {
-        return userName != null && expertise != null ;
+        return userName != null && expertise != null;
+    }
+
+    public List<String> getNotifications() {
+        return notifications;
     }
 }

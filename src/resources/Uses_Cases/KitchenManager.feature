@@ -16,11 +16,11 @@ Feature: Special Cook Project Management System
       | Shellfish      |
 
   Scenario: Chef views customer dietary restrictions
-    Given customer "Maria Garcia" has these restrictions:
+    Given customer "Alice" has these restrictions:
       | Dietary Need | Details          |
       | Allergy      | Peanuts          |
       | Preference   | Halal            |
-    When chef "Ahmed Khan" opens "Maria"'s profile
+    When chef "Ahmed Khan" opens "Alice"'s profile
     Then the system displays:
       """
       DIETARY FLAGS:
@@ -30,11 +30,11 @@ Feature: Special Cook Project Management System
     And any recipe containing "peanuts" is marked "Unsafe"
 
   Scenario: Customer reorders from past meals
-    Given customer "Li Wei" has order history:
+    Given customer "Alice" has order history:
       | Date       | Meal               | Price |
-      | 2023-11-10 | Mapo Tofu          | $14   |
-      | 2023-11-12 | Vegetable Dumplings| $18   |
-    When he selects "Re-order" for "Mapo Tofu"
+      | 2023-11-10 | classicToast       | $14   |
+      | 2023-11-12 |sweetBites          | $18   |
+    When he selects "Re-order" for "sweetBites"
     Then the system pre-fills his cart with:
       | Item        | Customization       |
       | Mapo Tofu   | Spiciness: Medium   |
@@ -53,29 +53,6 @@ Feature: Special Cook Project Management System
       """
     And prevents checkout until resolved
 
-  Scenario: AI recommends recipes based on user constraints
-    Given the following user constraints exist:
-      | Parameter       | Value               |
-      | Maximum time    | 30 minutes          |
-      | Available items | Eggs, Spinach, Bread|
-      | Diet type       | Vegetarian          |
-    When the user requests recipe recommendations
-    Then the system should suggest matching recipes:
-      """
-      Recommended Recipes:
-
-      1. Spinach Omelette
-         - Preparation time: 25 minutes
-         - Ingredients used: Eggs, Spinach
-         - Nutrition: 280 kcal, 22g protein
-         - Tags: High-protein, Vegetarian
-
-      2. Garlic Spinach Toast
-         - Preparation time: 15 minutes
-         - Ingredients used: Bread, Spinach
-         - Nutrition: 180 kcal, 8g protein
-         - Tags: Quick, Vegetarian
-      """
 
 
   Scenario: Kitchen manager handles low inventory

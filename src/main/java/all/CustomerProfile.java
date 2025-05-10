@@ -1,7 +1,6 @@
 package all;
 
 public class CustomerProfile extends Person {
-
     private String dietaryPreference;
     private String allergy;
 
@@ -19,6 +18,15 @@ public class CustomerProfile extends Person {
         return allergy;
     }
 
+    public void setDietaryPreference(String dietaryPreference) {
+        this.dietaryPreference = dietaryPreference;
+    }
+
+    public void setAllergy(String allergy) {
+        this.allergy = allergy;
+    }
+
+
     public boolean isValid() {
         return userName != null && dietaryPreference != null && allergy != null ;
     }
@@ -30,5 +38,6 @@ public class CustomerProfile extends Person {
         boolean matchesPreference = m.getDietaryCategory().equalsIgnoreCase(dietaryPreference);
         return safe && matchesPreference;
     }
+
 
 }
