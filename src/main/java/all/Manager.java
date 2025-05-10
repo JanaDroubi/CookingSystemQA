@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Manager extends Person {
 
-    private static HashMap<String, Ingredient> ingredients = new HashMap<>();
+    static HashMap<String, Ingredient> ingredients = new HashMap<>();
 
     public Manager(String userName, String pass, String role) {
         super(userName, pass, role);

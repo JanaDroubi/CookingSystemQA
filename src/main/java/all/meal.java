@@ -5,7 +5,7 @@ import java.util.List;
 public class meal {
     private String name;
     private List<Ingredient> ingredients;
-
+double price;
     public meal(String name, List<Ingredient> ingredients) {
         this.name = name;
         this.ingredients = ingredients;
@@ -33,5 +33,14 @@ public class meal {
         }
         builder.append("]");
         return builder.toString();
+    }
+
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

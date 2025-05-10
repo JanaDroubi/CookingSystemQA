@@ -17,7 +17,7 @@ public class MyApplication {
     private static final List<order> orderHistory = new ArrayList<>();
     private static final List<order> allOrders = new ArrayList<>();
     private static final List<meal> meals=new ArrayList<>();
-
+    public static Manager testmanager = new Manager("test","test","test");
 
     private String message;
     private boolean validation;

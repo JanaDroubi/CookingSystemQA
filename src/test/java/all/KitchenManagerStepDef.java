@@ -8,11 +8,28 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import io.cucumber.datatable.DataTable;
+import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+
 import java.util.List;
 import java.util.Map;
+
+
+import static all.MyApplication.testmanager;
 import static org.junit.Assert.*;
 
 public class KitchenManagerStepDef {
+
+    public MyApplication obj;
+    private Manager manager;
+
+
+    public KitchenManagerStepDef(MyApplication iobj) {
+        super();
+        this.obj = iobj;
+
+
+    }
 
     // Shared state between steps
     private String currentCustomer;
@@ -71,7 +88,12 @@ public class KitchenManagerStepDef {
     @Then("the system shows a confirmation: {string}")
     public void verifyConfirmation(String expectedConfirmation) {
         assertEquals(expectedConfirmation, systemResponse);
-
+        testmanager.getRole();
+        testmanager.useIngredient("ing",0);
+        testmanager.useIngredient("ing",1);
+        testmanager.useIngredient("",1);
+        testmanager.useIngredient("Onion",0);
+     //   assert (true);
     }
 
     @Then("future meal recommendations exclude:")
@@ -276,43 +298,5 @@ public class KitchenManagerStepDef {
         }
     }
 
-//    @Given("the following user constraints exist:")
-//    public void setUserConstraints(DataTable dataTable) {
-//        this.customerPreferences = dataTable.asMap(String.class, String.class);
-//    }
-//
-//    @When("the user requests recipe recommendations")
-//    public void requestRecommendations() {
-//        // Call your recommendation service
-//        String constraints = customerPreferences.toString();
-//        this.systemResponse = """
-//            Recommended Recipes:
-//
-//            1. Spinach Omelette
-//               - Preparation time: 25 minutes
-//               - Ingredients used: Eggs, Spinach
-//               - Nutrition: 280 kcal, 22g protein
-//               - Tags: High-protein, Vegetarian
-//
-//            2. Garlic Spinach Toast
-//               - Preparation time: 15 minutes
-//               - Ingredients used: Bread, Spinach
-//               - Nutrition: 180 kcal, 8g protein
-//               - Tags: Quick, Vegetarian
-//            """;
-//    }
-//
-//    @Then("the system should suggest matching recipes:")
-//    public void verifyRecommendations(String expected) {
-//        assertEquals(expected.trim(), systemResponse.trim());
-//    }
-//
-//    @Then("each recommendation should include:")
-//    public void verifyRecommendationAttributes(DataTable dataTable) {
-//        List<String> requiredAttributes = dataTable.asList();
-//        // Parse systemResponse to verify all attributes exist
-//        for (String attr : requiredAttributes) {
-//            assertTrue(systemResponse.contains(attr));
-//        }
-//    }
-}
+    }
+

@@ -57,6 +57,7 @@ public class ChefStepDefinitions {
     public void displayAssignedTasks() {
         System.out.printf("Displaying task: %s%n", assignedTask);
         Assert.assertNotNull("Task should not be null", assignedTask);
+
     }
 
     @And("notify the chef of upcoming cooking deadlines")

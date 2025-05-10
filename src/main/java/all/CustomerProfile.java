@@ -26,4 +26,5 @@ public class CustomerProfile extends Person {
     public boolean isMealValid() {
         return !dietaryPreference.toLowerCase().contains(allergy.toLowerCase());
     }
+
 }

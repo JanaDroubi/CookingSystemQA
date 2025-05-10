@@ -5,7 +5,7 @@ public class order {
 
         private CustomerProfile customer;
         private meal meal;
-        private double price;
+        public double price;
         public order(CustomerProfile customer, meal meal) {
             this.customer = customer;
             this.meal = meal;
@@ -19,7 +19,6 @@ public class order {
         public meal getMeal() {
             return meal;
         }
-
 
 
         public double getPrice() {
