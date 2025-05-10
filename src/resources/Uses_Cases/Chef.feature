@@ -27,6 +27,7 @@ Feature: Chef Task Management
       | Alice    | Almond Milk | Soy Milk    | Approved  |
       | Bob      | Sugar       | Honey       | Adjusted  |
 
+
   Scenario Outline: View customer dietary preferences
     Given a chef wants to customize a meal
     And the dietary details:
@@ -36,9 +37,9 @@ Feature: Chef Task Management
     Then the system should display the customer's dietary preferences and allergies
 
     Examples:
-      | Customer | Preference | Allergy |
-      | Emily    | Vegetarian | Nuts    |
-      | Mark     | Vegan      | Dairy   |
+      | Customer | Preference  | Allergy  |
+      | Alice    | Vegetarian  | Nuts     |
+      | Mark     | Vegan       | Dairy    |
 
   Scenario Outline: Access customers' order history
     Given a chef wants to suggest a meal plan

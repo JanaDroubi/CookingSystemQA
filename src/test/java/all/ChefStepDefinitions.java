@@ -9,6 +9,8 @@ import org.junit.Assert.*;
 
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
+
 public class ChefStepDefinitions {
 
     public MyApplication obj;
@@ -17,7 +19,9 @@ public class ChefStepDefinitions {
     public ChefStepDefinitions(MyApplication iobj) {
         super();
         this.obj = iobj;
-
+        obj.addCustomer(new CustomerProfile( "Alice", "1234", "customer", "Vegetarian","Nuts" ));
+        obj.addCustomer(new CustomerProfile(  "Mark" , "1234"    , "customer"  , "Vegan","Dairy" ));
+       // CustomerProfile profile = new CustomerProfile(customerName, "dummyPass", "customer", dietaryPreference, allergyInfo);
 
     }
 
@@ -44,6 +48,7 @@ public class ChefStepDefinitions {
     // ===== View assigned cooking tasks steps =====
     @Given("a chef is logged into the system")
     public void chefIsLoggedIn() {
+
         System.out.println("Chef is logged into the system");
     }
 
@@ -56,7 +61,7 @@ public class ChefStepDefinitions {
     @Then("the system should display all assigned tasks")
     public void displayAssignedTasks() {
         System.out.printf("Displaying task: %s%n", assignedTask);
-        Assert.assertNotNull("Task should not be null", assignedTask);
+        assertNotNull("Task should not be null", assignedTask);
 
     }
 
@@ -115,14 +120,19 @@ public class ChefStepDefinitions {
         this.customerName = data.get("Customer Name");
         this.dietaryPreference = data.get("Dietary Preference");
         this.allergyInfo = data.get("Allergy");
-        System.out.printf("Loaded dietary info for %s%n", customerName);
+
+        // Create and add a profile to the system
+        CustomerProfile profile = new CustomerProfile(customerName, "dummyPass", "customer", dietaryPreference, allergyInfo);
+        obj.addCustomer(profile);
+
+
     }
 
     @When("they access a customer's profile")
     public void accessCustomerProfile() {
 
         CustomerProfile profile = obj.getProfileByName(customerName);
-        Assert.assertNotNull("Profile not found!", profile);
+        assertNotNull("Profile not found!", profile);
         dietaryPreference = profile.getDietaryPreference();
         allergyInfo = profile.getAllergy();
         System.out.printf("👨‍🍳 Accessed profile for %s%n", profile.getUserName());
@@ -130,12 +140,16 @@ public class ChefStepDefinitions {
 
     @Then("the system should display the customer's dietary preferences and allergies")
     public void displayDietaryInfo() {
-        System.out.println("📋 Dietary Info:");
-        System.out.println("   • Preference: " + dietaryPreference);
-        System.out.println("   • Allergy   : " + allergyInfo);
+        CustomerProfile profile = obj.getProfileByName(customerName);
 
-        Assert.assertNotNull(dietaryPreference);
-        Assert.assertNotNull(allergyInfo);
+        // ✅ Assert that the profile exists
+        assertNotNull("❌ Customer profile not found for: " + customerName, profile);
+
+        // ✅ Assert profile fields are not null
+        assertNotNull("❌ Dietary preference is missing for: " + customerName, profile.getDietaryPreference());
+        assertNotNull("❌ Allergy info is missing for: " + customerName, profile.getAllergy());
+        // ✅ Display the profile
+        obj.displayCustomerDietaryInfo(profile);
     }
 
     // ===== Access customers' order history steps =====

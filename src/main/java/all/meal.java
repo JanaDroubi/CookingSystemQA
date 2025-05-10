@@ -5,42 +5,31 @@ import java.util.List;
 public class meal {
     private String name;
     private List<Ingredient> ingredients;
-double price;
-    public meal(String name, List<Ingredient> ingredients) {
+    private String dietaryCategory; // NEW field e.g., "Vegan", "Low Carb"
+
+    public meal(String name, List<Ingredient> ingredients, String dietaryCategory) {
         this.name = name;
         this.ingredients = ingredients;
+        this.dietaryCategory = dietaryCategory;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
+    public String getName() { return name; }
+    public List<Ingredient> getIngredients() { return ingredients; }
+    public String getDietaryCategory() { return dietaryCategory; }
 
     public boolean containsAllergen(String allergen) {
         return ingredients.stream()
                 .anyMatch(ing -> ing.getName().equalsIgnoreCase(allergen));
     }
 
+    public boolean matchesDietaryPreference(String preference) {
+        return dietaryCategory.equalsIgnoreCase(preference);
+    }
+
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder(name + " [");
-        for (int i = 0; i < ingredients.size(); i++) {
-            builder.append(ingredients.get(i).getName());
-            if (i < ingredients.size() - 1) builder.append(", ");
-        }
-        builder.append("]");
-        return builder.toString();
-    }
-
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
+        return name + " (" + dietaryCategory + ")";
     }
 }
+
+

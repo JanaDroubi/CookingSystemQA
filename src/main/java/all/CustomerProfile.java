@@ -23,8 +23,12 @@ public class CustomerProfile extends Person {
         return userName != null && dietaryPreference != null && allergy != null ;
     }
 
-    public boolean isMealValid() {
-        return !dietaryPreference.toLowerCase().contains(allergy.toLowerCase());
+    public boolean isMealValid(meal m) {
+        // Check allergen
+        boolean safe = !m.containsAllergen(allergy);
+        // Check dietary category match
+        boolean matchesPreference = m.getDietaryCategory().equalsIgnoreCase(dietaryPreference);
+        return safe && matchesPreference;
     }
 
 }

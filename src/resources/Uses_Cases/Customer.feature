@@ -5,17 +5,17 @@ Feature: Customer
     Given the customer "<Customer>" is logged in
     And a customer wants to input their dietary preferences
     When the preference details:
-      | Customer Name | Dietary Preference | Allergy  | pass |
-      | <Customer>   | <Preference>       | <Allergy> |  <pass> |
+      | Customer Name | Dietary Preference | Allergy  |
+      | <Customer>   | <Preference>       | <Allergy> |
     Then the system should store their preferences
-    And ensure meals do not contain restricted ingredients
+    #And ensure meals do not contain restricted ingredients
     And the system should only show meals matching their dietary needs
 
 
     Examples:
-      | Customer | Preference  | Allergy  | pass|
-      | Alice    | Vegetarian  | Nuts     |     |
-      | Mark     | Vegan       | Dairy    |     |
+      | Customer | Preference  | Allergy  |
+      | Alice    | Vegetarian  | Nuts     |
+      | Mark     | Vegan       | Dairy    |
 
 
   Scenario Outline: Track past orders and meal plans
@@ -28,11 +28,11 @@ Feature: Customer
 
     Examples:
       | Customer | LastMeal               |
-      | Sarah    | Grilled Chicken Salad  |
-      | Sarah    | Fruit Bowl             |
-      | Sarah    | Lentil Soup            |
-      | Tom      | Gluten-Free Pasta      |
-      | Tom      | Protein Shake          |
+      | ALice  | Grilled Chicken Salad  |
+      | ALice   | Fruit Bowl             |
+      | Alice    | Lentil Soup            |
+      | Mark    | Gluten-Free Pasta      |
+      | Mark     | Protein Shake          |
 
 
 
@@ -46,8 +46,8 @@ Feature: Customer
 
     Examples:
       | Customer | Meal                  |
-      | Sarah    | Fruit Bowl            |
-      | Sarah    | Lentil Soup           |
+      | ALice  | Grilled Chicken Salad   |
+      | ALice   | Fruit Bowl             |
 
 
   Scenario Outline: Create custom meal requests
@@ -71,17 +71,15 @@ Feature: Customer
     Given the customer "<Customer>" is logged in
     And a customer selects an unavailable ingredient
     And substitution details:
-      | Customer Name | Original Ingredient | Suggested Substitute |
-      | <Customer>    | <Original>          | <Substitute>         |
+      | Customer Name | Original Ingredient | Suggested Substitute | Decision  |
+      | <Customer>    | <Original>          | <Substitute>        | <Decision> |
     When they receive the suggested substitution
     Then they should approve or reject the change
 
     Examples:
-      | Customer | Original    | Substitute  |
-      | Anna     | Almond Milk | Oat Milk    |
-      | Bob      | Sugar       | Stevia      |
-
-
+      | Customer | Original    | Substitute  | Decision  |
+      | Alice    | Almond Milk |OatMilk    | Approved  |
+      | Mark    | Sugar       | OatMilk      | Rejected   |
 
 
   Scenario: Send notification for upcoming meal

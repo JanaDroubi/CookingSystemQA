@@ -1,6 +1,7 @@
 package all;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MyApplication {
 
@@ -14,10 +15,11 @@ public class MyApplication {
     public static List<Supplier> suppliers = new ArrayList<>();
     private static List<CustomerProfile> customers = new ArrayList<>();// array of suppliers
     private static final List<order> pendingOrders = new ArrayList<>();
-    private static final List<order> orderHistory = new ArrayList<>();
+     private  static final Map<CustomerProfile, List<order>> orderHistory = new HashMap<>();
     private static final List<order> allOrders = new ArrayList<>();
     private static final List<meal> meals=new ArrayList<>();
     public static Manager testmanager = new Manager("test","test","test");
+    private final List<String> notificationLog = new ArrayList<>();
 
     private String message;
     private boolean validation;
@@ -68,23 +70,79 @@ public class MyApplication {
         Ingredient chicken = new Ingredient("Chicken", 12, 8, new Ingredient("Soy Chunks", 10, 5, null));
         Ingredient flour = new Ingredient("Flour", 25, 15, new Ingredient("Oat Flour", 10, 5, null));
         Ingredient sugar = new Ingredient("Sugar", 18, 10, new Ingredient("Stevia", 8, 3, null));
-        Ingredient tofu = new Ingredient("Tofu", 10, 5, null);
         Ingredient salt = new Ingredient("Salt", 20, 10, null);
+        Ingredient tofu = new Ingredient("Tofu", 15, 5, new Ingredient("Tempeh", 10, 5, null));
+
         ingredients.add(tomato);  ingredients.add(cheese);  ingredients.add(lettuce);  ingredients.add(onion);
         ingredients.add(garlic);  ingredients.add(beef);  ingredients.add(chicken);  ingredients.add(flour);
         ingredients.add(sugar);  ingredients.add(tofu);  ingredients.add(salt);
+        Ingredient OatMilk =new Ingredient("Oat Milk", 10, 5, null);
+
+        // Ingredients for Vegan, Vegetarian, and High Protein diets, with alternatives
+        Ingredient spinach = new Ingredient("Spinach", 15, 5, new Ingredient("Kale", 10, 5, null));
+        Ingredient avocado = new Ingredient("Avocado", 8, 3, new Ingredient("Hummus", 10, 5, null));
+        Ingredient quinoa = new Ingredient("Quinoa", 20, 10, new Ingredient("Brown Rice", 15, 5, null));
+        Ingredient chickpeas = new Ingredient("Chickpeas", 25, 10, new Ingredient("Lentils", 20, 10, null));
+        Ingredient almondMilk = new Ingredient("Almond Milk", 12, 5, OatMilk);
+        ingredients.add(OatMilk);
+
+        Ingredient stevia = new Ingredient("Stevia", 18, 5, new Ingredient("Maple Syrup", 10, 5, null));
+        Ingredient broccoli = new Ingredient("Broccoli", 20, 8, new Ingredient("Cauliflower", 15, 5, null));
+        Ingredient oliveOil = new Ingredient("Olive Oil", 30, 10, new Ingredient("Coconut Oil", 15, 5, null));
+        ingredients.add(spinach); ingredients.add(avocado); ingredients.add(quinoa); ingredients.add(chickpeas);
+        ingredients.add(almondMilk); ingredients.add(stevia); ingredients.add(broccoli); ingredients.add(oliveOil);
 
 
 
-        meal veganBowl = new meal("Vegan Bowl", List.of(tofu, lettuce, tomato));
-        meal beefBurger = new meal("Beef Burger", List.of(beef, onion, lettuce, salt));
-        meal cheesyGarlicBread = new meal("Cheesy Garlic Bread", List.of(flour, cheese, garlic));
-        meal chickenWrap = new meal("Chicken Wrap", List.of(chicken, tomato, lettuce, onion));
-        meal sweetBites = new meal("Sweet Bites", List.of(sugar, flour));
-        meal proteinDelight = new meal("Protein Delight", List.of(beef, chicken, garlic));
-        meal greenSalad = new meal("Green Salad", List.of(lettuce, tomato, onion));
-        meal classicToast = new meal("Classic Toast", List.of(flour, salt));
-        meal dietSmoothie = new meal("Diet Smoothie", List.of(sugar, salt, tomato));
+        meal veganBowl = new meal("Vegan Bowl", List.of(tofu, lettuce, tomato), "Vegan");
+        meal beefBurger = new meal("Beef Burger", List.of(beef, onion, lettuce, salt), "High Protein");
+        meal cheesyGarlicBread = new meal("Cheesy Garlic Bread", List.of(flour, cheese, garlic), "Vegetarian");
+        meal chickenWrap = new meal("Chicken Wrap", List.of(chicken, tomato, lettuce, onion), "High Protein");
+        meal sweetBites = new meal("Sweet Bites", List.of(sugar, flour), "Vegetarian");
+        meal proteinDelight = new meal("Protein Delight", List.of(beef, chicken, garlic), "High Protein");
+        meal greenSalad = new meal("Green Salad", List.of(lettuce, tomato, onion), "Vegan");
+        meal classicToast = new meal("Classic Toast", List.of(flour, salt), "Vegetarian");
+        meal dietSmoothie = new meal("Diet Smoothie", List.of(sugar, salt, tomato), "Vegan");
+
+
+
+
+        meals.add(veganBowl);
+        meals.add(beefBurger);
+        meals.add(cheesyGarlicBread);
+        meals.add(chickenWrap);
+        meals.add(sweetBites);
+        meals.add(proteinDelight);
+        meals.add(greenSalad);
+        meals.add(classicToast);
+        meals.add(dietSmoothie);
+
+
+        meal fruitBowl = new meal("Fruit Bowl", List.of(tomato, sugar), "Vegan"); // Simplified ingredients
+        meal lentilSoup = new meal("Lentil Soup", List.of(onion, tomato), "Vegan");
+        meal glutenFreePasta = new meal("Gluten-Free Pasta", List.of(tofu, tomato), "Vegan");
+        meal proteinShake = new meal("Protein Shake", List.of(chicken, sugar), "High Protein");
+
+        // Vegan meals
+        meal quinoaAvocadoBowl = new meal("Quinoa Avocado Bowl", List.of(quinoa, avocado, spinach, oliveOil), "Vegan");
+        meal chickpeaStirFry = new meal("Chickpea Stir Fry", List.of(chickpeas, broccoli, garlic, oliveOil), "Vegan");
+
+// Vegetarian meals
+        meal spinachSmoothie = new meal("Spinach Smoothie", List.of(spinach, almondMilk, stevia), "Vegetarian");
+
+// High Protein meals
+        meal tofuQuinoaSalad = new meal("Tofu Quinoa Salad", List.of(tofu, quinoa, broccoli, oliveOil), "High Protein");
+
+        meals.add(fruitBowl);
+        meals.add(lentilSoup);
+        meals.add(glutenFreePasta);
+        meals.add(proteinShake);
+        meal grilledChickenSalad = new meal("Grilled Chicken Salad", List.of(chicken, lettuce, tomato), "High Protein");
+        meals.add(grilledChickenSalad);
+        meals.add(quinoaAvocadoBowl);
+        meals.add(spinachSmoothie);
+        meals.add(chickpeaStirFry);
+        meals.add(tofuQuinoaSalad);
 
 
 
@@ -110,9 +168,19 @@ public class MyApplication {
         suppliers.add(supplier2);
         suppliers.add(supplier3);
 
+
+
+        Admin admin = new Admin("admin1", "adminpass");
+
+
         isLoggedIn = false;
 
     }
+
+//
+//    public Map<String, List<String>> getOrderHistoryMap() {
+//        return orderHistory;
+//    }
 
     public void setUsernameAndPassAndPassFromSystem(String name, String pass) {
         validation = false;
@@ -207,29 +275,17 @@ public class MyApplication {
     }
 
     public void loginByNameOnly(String name) {
-//        for (Person user : users) {
-//            if (user.getUserName().equalsIgnoreCase(name)) {
-//                loggedInUser = user;
-//                validation = true;
-//                return;
-//            }
-//        }
-//        loggedInUser = null;
-//        validation = false;
-    }
 
-
-
-
-  /*  public void addCustomerProfile(String name, String preference, String allergy) {
-        CustomerProfile customer = new CustomerProfile(name, preference, allergy); // null = لم يُطلب بعد
-        if (customer.isValid()) {
-            customerProfiles.add(customer);
-            System.out.println("✅ Customer added: " + name);
-        } else {
-            System.out.println("❌ Invalid customer data.");
+            for (CustomerProfile c : customers) {
+                if (c.getUserName().equalsIgnoreCase(name)) {
+                    loggedInUser = c;
+                    System.out.println("🔐 User logged in by name: " + name);
+                    return;
+                }
+            }
+            System.out.println("❌ No customer found with name: " + name);
         }
-    }*/
+
 
     public List<CustomerProfile> getCustomerProfiles() {
         return customers;
@@ -261,7 +317,6 @@ public class MyApplication {
         }
     }
 
-
     public CustomerProfile getProfileByName(String name) {
         for (CustomerProfile profile : customers) {
             if (profile.getUserName().equalsIgnoreCase(name)) {
@@ -280,21 +335,12 @@ public class MyApplication {
             "Grilled Chicken"
     );
 
-    public List<String> getFilteredSuggestedMeals(CustomerProfile profile) {
-
-        List<String> allowedMeals = new ArrayList<>();
-
-        for (String meal : suggestedMeals) {
-            // If meal doesn't mention allergy AND matches preference
-
-            if (!meal.toLowerCase().contains(profile.getAllergy().toLowerCase()) &&
-                    meal.toLowerCase().contains(profile.getDietaryPreference().toLowerCase())) {
-                allowedMeals.add(meal);
-            }
-        }
-
-        return allowedMeals;
-    }
+//    public List<meal> getFilteredSuggestedMeals(CustomerProfile profile) {
+//        return meals.stream()
+//                .filter(m -> !m.containsAllergen(profile.getAllergy()))
+//                .filter(m -> m.getDietaryCategory().equalsIgnoreCase(profile.getDietaryPreference()))
+//                .collect(Collectors.toList());
+//    }
 
 
     ////////////////////orders////////////////////////////
@@ -303,35 +349,33 @@ public class MyApplication {
    // private Map<String, List<String>> pendingOrders = new HashMap<>();
 
 
-    public void addToPendingOrders( CustomerProfile b, meal m) {
-        pendingOrders.add(new order(b, m));
-        System.out.println("⚠️ Order added to pending list. Please confirm it before submission.");
-    }
+//    public void addToPendingOrders( CustomerProfile b, meal m) {
+//        pendingOrders.add(new order(b, m));
+//        System.out.println("⚠️ Order added to pending list. Please confirm it before submission.");
+//    }
 
-
-    public List<order> getPendingOrdersForCustomer(CustomerProfile customer) {
-        return pendingOrders.stream()
-                .filter(order -> order.getCustomer().equals(customer))
-                .toList();
-    }
-
-    public void confirmOrders(CustomerProfile customer) {
-        List<order> toConfirm = new ArrayList<>();
-
-        for (order order : pendingOrders) {
-            if (order.getCustomer().equals(customer)) {
-                orderHistory.add(order);       // ✅ Move to history
-                toConfirm.add(order);          // 📌 Mark for removal
+    public meal getMealByName(String mealName) {
+        for (meal m : meals) {
+            if (m.getName().equalsIgnoreCase(mealName)) {
+                return m;
             }
         }
-
-        if (!toConfirm.isEmpty()) {
-            pendingOrders.removeAll(toConfirm);  // 🧹 Clean up
-            System.out.println("✅ Orders confirmed and sent to the chef.");
-        } else {
-            System.out.println("⚠️ No pending orders to confirm.");
-        }
+        return null;
     }
+
+
+//    public List<order> getPendingOrdersForCustomer(CustomerProfile customer) {
+//        return pendingOrders.stream()
+//                .filter(order -> order.getCustomer().equals(customer))
+//                .toList();
+//    }
+    public Map<CustomerProfile, List<order>>  getOrdersForCustomer(CustomerProfile customer) {
+        return orderHistory;
+    }
+
+
+
+
 
 
     ///////////////////////////////////history////////////////////////////
@@ -449,32 +493,32 @@ public class MyApplication {
     }
 
 
-    public List<Ingredient> validateIngredients(List<Ingredient> selected, CustomerProfile customer) {
-        List<Ingredient> finalList = new ArrayList<>();
-
-        for (Ingredient ing : selected) {
-            boolean unavailable = ing.getQuantity() < ing.getThreshold();
-            boolean allergic = ing.getName().equalsIgnoreCase(customer.getAllergy());
-
-            if (unavailable || allergic) {
-                if (ing.getAlternative() != null) {
-                    System.out.printf("⚠️ '%s' is %s. Suggested: %s%n",
-                            ing.getName(),
-                            allergic ? "an allergen" : "out of stock",
-                            ing.getAlternative().getName());
-
-                    alertChef(customer, ing, ing.getAlternative());
-                    finalList.add(ing.getAlternative());  // apply substitution
-                } else {
-                    System.out.printf("❌ No substitute available for '%s'. Removing it.%n", ing.getName());
-                }
-            } else {
-                finalList.add(ing);
-            }
-        }
-
-        return finalList;
-    }
+//    public List<Ingredient> validateIngredients(List<Ingredient> selected, CustomerProfile customer) {
+//        List<Ingredient> finalList = new ArrayList<>();
+//
+//        for (Ingredient ing : selected) {
+//            boolean unavailable = ing.getQuantity() < ing.getThreshold();
+//            boolean allergic = ing.getName().equalsIgnoreCase(customer.getAllergy());
+//
+//            if (unavailable || allergic) {
+//                if (ing.getAlternative() != null) {
+//                    System.out.printf("⚠️ '%s' is %s. Suggested: %s%n",
+//                            ing.getName(),
+//                            allergic ? "an allergen" : "out of stock",
+//                            ing.getAlternative().getName());
+//
+//                    alertChef(customer, ing, ing.getAlternative());
+//                    finalList.add(ing.getAlternative());  // apply substitution
+//                } else {
+//                    System.out.printf("❌ No substitute available for '%s'. Removing it.%n", ing.getName());
+//                }
+//            } else {
+//                finalList.add(ing);
+//            }
+//        }
+//
+//        return finalList;
+//    }
 
     private void alertChef(CustomerProfile customer, Ingredient original, Ingredient substitute) {
         System.out.printf("👨‍🍳 Chef Alert: %s's order substituted %s with %s.%n", customer.getUserName(), original.getName(), substitute.getName());
@@ -619,4 +663,204 @@ public class MyApplication {
     }
     }
     //////////////////////////////////////////////////////
+
+
+    public void displayCustomerDietaryInfo(CustomerProfile customer) {
+        if (customer == null) {
+            System.out.println("❌ Customer not found.");
+            return;
+        }
+
+        System.out.println("📋 Dietary Profile for " + customer.getUserName() + ":");
+        System.out.println("   • Preference: " + customer.getDietaryPreference());
+        System.out.println("   • Allergy   : " + customer.getAllergy());
+    }
+
+
+
+
+//
+//    public void addMealToOrderHistory(CustomerProfile customer, String mealName) {
+//        meal matchedMeal = meals.stream()
+//                .filter(m -> m.getName().equalsIgnoreCase(mealName))
+//                .findFirst()
+//                .orElse(null);
+//
+//        if (matchedMeal == null) {
+//            System.out.println("⚠️ Meal not found: " + mealName);
+//            return;
+//        }
+//
+//        orderHistory.putIfAbsent(customer, new ArrayList<>());
+//        orderHistory.get(customer).add(new order(customer, matchedMeal));
+//
+//        System.out.printf("✅ Order added to %s's history: %s\n", customer.getUserName(), mealName);
+//    }
+
+
+
+    public static class ValidationResult {
+        private final List<Ingredient> validatedIngredients;
+        private final List<Substitution> substitutions;
+
+        public static class Substitution {
+            public final Ingredient original;
+            public final Ingredient substitute;
+            public final String reason;
+
+            public Substitution(Ingredient original, Ingredient substitute, String reason) {
+                this.original = original;
+                this.substitute = substitute;
+                this.reason = reason;
+            }
+        }
+
+        public ValidationResult(List<Ingredient> validatedIngredients, List<Substitution> substitutions) {
+            this.validatedIngredients = validatedIngredients;
+            this.substitutions = substitutions;
+        }
+
+        public List<Ingredient> getValidatedIngredients() {
+            return validatedIngredients;
+        }
+
+        public List<Substitution> getSubstitutions() {
+            return substitutions;
+        }
+    }
+
+    public ValidationResult validateIngredients(List<Ingredient> selected, CustomerProfile customer) {
+        List<Ingredient> finalList = new ArrayList<>();
+        List<ValidationResult.Substitution> substitutions = new ArrayList<>();
+
+        for (Ingredient ing : selected) {
+            boolean unavailable = ing.getQuantity() < ing.getThreshold();
+            boolean allergic = ing.getName().equalsIgnoreCase(customer.getAllergy());
+
+            if (unavailable || allergic) {
+                if (ing.getAlternative() != null) {
+                    String reason = allergic ? "allergen" : "out of stock";
+                    substitutions.add(new ValidationResult.Substitution(ing, ing.getAlternative(), reason));
+                    alertChef(customer, ing, ing.getAlternative());
+                    finalList.add(ing.getAlternative());
+                } else {
+                    System.out.printf("❌ No substitute available for '%s'. Removing it.%n", ing.getName());
+                }
+            } else {
+                finalList.add(ing);
+            }
+        }
+
+        return new ValidationResult(finalList, substitutions);
+    }
+
+    // New: Validate a custom meal based on a comma-separated ingredient string
+    public ValidationResult validateCustomMeal(String ingredientList, CustomerProfile profile) {
+        List<Ingredient> selectedIngredients = Arrays.stream(ingredientList.split(",\\s*"))
+                .map(this::findIngredient)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        if (selectedIngredients.isEmpty()) {
+            System.out.println("❌ No valid ingredients found in: " + ingredientList);
+            return new ValidationResult(List.of(), List.of());
+        }
+
+        // Validate dietary preference (e.g., ensure all ingredients are compatible)
+        boolean dietaryMismatch = selectedIngredients.stream()
+                .anyMatch(ing -> !isIngredientCompatibleWithDietaryPreference(ing, profile.getDietaryPreference()));
+        if (dietaryMismatch) {
+            System.out.println("❌ Ingredients do not match dietary preference: " + profile.getDietaryPreference());
+            return new ValidationResult(List.of(), List.of());
+        }
+
+        // Use existing validateIngredients for allergy and stock checks
+        return validateIngredients(selectedIngredients, profile);
+    }
+
+    // Helper for validateCustomMeal
+    private Ingredient findIngredient(String name) {
+        return ingredients.stream()
+                .filter(ing -> ing.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
+    }
+
+    // Helper for dietary preference check (simplified, can be expanded)
+    private boolean isIngredientCompatibleWithDietaryPreference(Ingredient ingredient, String dietaryPreference) {
+        // Example logic: reject non-vegan ingredients for vegan preference
+        if (dietaryPreference.equalsIgnoreCase("Vegan")) {
+            return !List.of("Beef", "Chicken", "Cheese").contains(ingredient.getName());
+        } else if (dietaryPreference.equalsIgnoreCase("Vegetarian")) {
+            return !List.of("Beef", "Chicken").contains(ingredient.getName());
+        }
+        return true; // Default: assume compatible for other preferences
+    }
+
+    // New: Handle ingredient substitution with customer approval
+    public boolean handleIngredientSubstitution(Ingredient original, Ingredient substitute, CustomerProfile customer, boolean approved) {
+        if (!approved) {
+            System.out.printf("❌ Customer %s rejected substitution: %s -> %s%n", customer.getUserName(), original.getName(), substitute.getName());
+            return false;
+        }
+
+        // Simulate updating the order with the substitute
+        System.out.printf("✅ Customer %s approved substitution: %s -> %s%n", customer.getUserName(), original.getName(), substitute.getName());
+        // Could update pendingOrders or create a new order with the substitute
+        return true;
+    }
+
+    // New: Get order history for a specific customer
+    public List<order> getCustomerOrderHistory(CustomerProfile customer) {
+        return orderHistory.getOrDefault(customer, new ArrayList<>());
+    }
+
+    // New: Send a notification (mock implementation)
+    public void sendNotification(CustomerProfile customer, String message) {
+        String notification = String.format("Notification to %s: %s", customer.getUserName(), message);
+        notificationLog.add(notification);
+        System.out.println("📩 " + notification);
+    }
+
+    // Helper: Check if a notification was sent (for testing)
+    public boolean hasNotificationForCustomer(CustomerProfile customer, String message) {
+        String expected = String.format("Notification to %s: %s", customer.getUserName(), message);
+        return notificationLog.contains(expected);
+    }
+
+    // Existing methods (unchanged or partially shown for context)
+    public void addMealToOrderHistory(CustomerProfile customer, String mealName) {
+        meal matchedMeal = meals.stream()
+                .filter(m -> m.getName().equalsIgnoreCase(mealName))
+                .findFirst()
+                .orElse(null);
+
+        if (matchedMeal == null) {
+            System.out.println("⚠️ Meal not found: " + mealName);
+            return;
+        }
+
+        orderHistory.putIfAbsent(customer, new ArrayList<>());
+        orderHistory.get(customer).add(new order(customer, matchedMeal));
+        System.out.printf("✅ Order added to %s's history: %s\n", customer.getUserName(), mealName);
+    }
+
+    public List<meal> getFilteredSuggestedMeals(CustomerProfile profile) {
+        return meals.stream()
+                .filter(m -> !m.containsAllergen(profile.getAllergy()))
+                .filter(m -> m.getDietaryCategory().equalsIgnoreCase(profile.getDietaryPreference()))
+                .collect(Collectors.toList());
+    }
+
+    public void addToPendingOrders(CustomerProfile customer, meal meal) {
+        pendingOrders.add(new order(customer, meal));
+        System.out.println("⚠️ Order added to pending list. Please confirm it before submission.");
+    }
+
+    public List<order> getPendingOrdersForCustomer(CustomerProfile customer) {
+        return pendingOrders.stream()
+                .filter(order -> order.getCustomer().equals(customer))
+                .collect(Collectors.toList());
+    }
+
 }
