@@ -51,8 +51,8 @@ Feature: Chef Task Management
 
     Examples:
       | Customer | LastMeal               |
-      | Sarah    | Grilled Chicken Salad  |
-      | Tom      | Gluten-Free Pasta      |
+      | ALice    | Grilled Chicken Salad  |
+      | Mark      | Gluten-Free Pasta      |
 #
 #Feature: Notifications and Alerts
 #

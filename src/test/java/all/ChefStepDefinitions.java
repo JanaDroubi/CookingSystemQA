@@ -8,24 +8,21 @@ import org.junit.Assert;
 import org.junit.Assert.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertFalse;
 
 public class ChefStepDefinitions {
 
     public MyApplication obj;
 
-
     public ChefStepDefinitions(MyApplication iobj) {
         super();
         this.obj = iobj;
-        obj.addCustomer(new CustomerProfile( "Alice", "1234", "customer", "Vegetarian","Nuts" ));
-        obj.addCustomer(new CustomerProfile(  "Mark" , "1234"    , "customer"  , "Vegan","Dairy" ));
-       // CustomerProfile profile = new CustomerProfile(customerName, "dummyPass", "customer", dietaryPreference, allergyInfo);
-
+        obj.addCustomer(new CustomerProfile("Alice", "1234", "customer", "Vegetarian", "Nuts"));
+        obj.addCustomer(new CustomerProfile("Mark", "1234", "customer", "Vegan", "Dairy"));
     }
-
-
 
     // Variables for View assigned cooking tasks
     private String chefName;
@@ -37,32 +34,27 @@ public class ChefStepDefinitions {
     private String substitutedIngredient;
     private String chefApproval;
 
-    // Add these with your other variable declarations at the top
+    // Variables for customer dietary preferences and order history
     private String customerName;
     private String dietaryPreference;
     private String allergyInfo;
     private String lastOrderedMeal;
 
-
-
     // ===== View assigned cooking tasks steps =====
     @Given("a chef is logged into the system")
     public void chefIsLoggedIn() {
-
         System.out.println("Chef is logged into the system");
     }
 
     @When("they check their task list")
     public void checkTaskList() {
-        System.out.printf(
-                "%s checks their task list%n", chefName);
+        System.out.printf("%s checks their task list%n", chefName);
     }
 
     @Then("the system should display all assigned tasks")
     public void displayAssignedTasks() {
         System.out.printf("Displaying task: %s%n", assignedTask);
         assertNotNull("Task should not be null", assignedTask);
-
     }
 
     @And("notify the chef of upcoming cooking deadlines")
@@ -74,8 +66,7 @@ public class ChefStepDefinitions {
     // ===== Approve or adjust ingredient substitutions steps =====
     @Given("a customer has selected an alternative ingredient")
     public void customerSelectsAlternative() {
-        System.out.printf("Substitution requested: %s -> %s%n",
-                originalIngredient, substitutedIngredient);
+        System.out.printf("Substitution requested: %s -> %s%n", originalIngredient, substitutedIngredient);
     }
 
     @When("the system notifies the chef")
@@ -110,7 +101,6 @@ public class ChefStepDefinitions {
     // ===== View customer dietary preferences steps =====
     @Given("a chef wants to customize a meal")
     public void chefWantsToCustomizeMeal() {
-
         System.out.println("Chef wants to customize a meal");
     }
 
@@ -121,16 +111,17 @@ public class ChefStepDefinitions {
         this.dietaryPreference = data.get("Dietary Preference");
         this.allergyInfo = data.get("Allergy");
 
-        // Create and add a profile to the system
-        CustomerProfile profile = new CustomerProfile(customerName, "dummyPass", "customer", dietaryPreference, allergyInfo);
-        obj.addCustomer(profile);
-
-
+        // Create and add a profile to the system if it doesn't exist
+        CustomerProfile profile = obj.getProfileByName(customerName);
+        if (profile == null) {
+            profile = new CustomerProfile(customerName, "dummyPass", "customer", dietaryPreference, allergyInfo);
+            obj.addCustomer(profile);
+            System.out.printf("✅ Added new customer profile for %s%n", customerName);
+        }
     }
 
     @When("they access a customer's profile")
     public void accessCustomerProfile() {
-
         CustomerProfile profile = obj.getProfileByName(customerName);
         assertNotNull("Profile not found!", profile);
         dietaryPreference = profile.getDietaryPreference();
@@ -141,21 +132,15 @@ public class ChefStepDefinitions {
     @Then("the system should display the customer's dietary preferences and allergies")
     public void displayDietaryInfo() {
         CustomerProfile profile = obj.getProfileByName(customerName);
-
-        // ✅ Assert that the profile exists
         assertNotNull("❌ Customer profile not found for: " + customerName, profile);
-
-        // ✅ Assert profile fields are not null
         assertNotNull("❌ Dietary preference is missing for: " + customerName, profile.getDietaryPreference());
         assertNotNull("❌ Allergy info is missing for: " + customerName, profile.getAllergy());
-        // ✅ Display the profile
         obj.displayCustomerDietaryInfo(profile);
     }
 
     // ===== Access customers' order history steps =====
     @Given("a chef wants to suggest a meal plan")
     public void chefWantsToSuggestMealPlan() {
-
         System.out.println("Chef wants to suggest a meal plan");
     }
 
@@ -165,26 +150,40 @@ public class ChefStepDefinitions {
         this.customerName = data.get("Customer Name");
         this.dietaryPreference = data.get("Dietary Preference");
         this.allergyInfo = data.get("Allergy");
+        this.lastOrderedMeal = data.get("Last Ordered Meal");
 
-        // Store in system
-       // obj.addCustomer(new CustomerProfile(customerName, dietaryPreference, allergyInfo));
-        System.out.printf("✅ Loaded dietary info for %s and saved to system%n", customerName);
+        // Ensure the customer profile exists
+        CustomerProfile profile = obj.getProfileByName(customerName);
+        if (profile == null) {
+            profile = new CustomerProfile(customerName, "dummyPass", "customer", dietaryPreference, allergyInfo);
+            obj.addCustomer(profile);
+            System.out.printf("✅ Added new customer profile for %s%n", customerName);
+        }
+
+        // Add a past order for the customer
+        if (lastOrderedMeal != null && !lastOrderedMeal.isEmpty()) {
+            obj.addMealToOrderHistory(profile, lastOrderedMeal);
+            System.out.printf("✅ Added past order for %s: %s%n", customerName, lastOrderedMeal);
+        }
     }
 
     @When("they access a customer's order history")
     public void accessOrderHistory() {
-
-        //obj.getOrdersForCustomer(customerName);
+        CustomerProfile profile = obj.getProfileByName(customerName);
+        assertNotNull("Customer profile not found", profile);
+        List<order> orders = obj.getCustomerOrderHistory(profile);
+        System.out.printf("Accessing order history for %s: %d orders found%n", customerName, orders.size());
     }
 
     @Then("the system should display past orders")
     public void displayPastOrders() {
-
-        //obj.getOrdersForCustomer(customerName);
-
+        CustomerProfile profile = obj.getProfileByName(customerName);
+        assertNotNull("❌ Customer profile not found for: " + customerName, profile);
+        List<order> orders = obj.getCustomerOrderHistory(profile);
+        assertFalse("No past orders found for: " + customerName, orders.isEmpty());
+        System.out.println("🧾 Past orders for " + customerName + ":");
+        for (order o : orders) {
+            System.out.println(" - " + o.getMeal().getName());
+        }
     }
-
-
-
-
 }
