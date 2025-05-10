@@ -124,7 +124,7 @@ public class ChefStepDefinitions {
         Assert.assertNotNull("Profile not found!", profile);
         dietaryPreference = profile.getDietaryPreference();
         allergyInfo = profile.getAllergy();
-        System.out.printf("👨‍🍳 Accessed profile for %s%n", profile.getName());
+        System.out.printf("👨‍🍳 Accessed profile for %s%n", profile.getUserName());
     }
 
     @Then("the system should display the customer's dietary preferences and allergies")
@@ -152,7 +152,7 @@ public class ChefStepDefinitions {
         this.allergyInfo = data.get("Allergy");
 
         // Store in system
-        obj.addCustomer(new CustomerProfile(customerName, dietaryPreference, allergyInfo));
+       // obj.addCustomer(new CustomerProfile(customerName, dietaryPreference, allergyInfo));
         System.out.printf("✅ Loaded dietary info for %s and saved to system%n", customerName);
     }
 

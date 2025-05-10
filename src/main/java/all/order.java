@@ -29,7 +29,7 @@ public class order {
 
     @Override
         public String toString() {
-            return "🧑 " + customer.getName() + " ordered 🍽 " + meal.getName();
+            return "🧑 " + customer.getUserName() + " ordered 🍽 " + meal.getName();
         }
 
 

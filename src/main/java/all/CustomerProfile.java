@@ -20,7 +20,7 @@ public class CustomerProfile extends Person {
     }
 
     public boolean isValid() {
-        return userName != null && dietaryPreference != null && allergy != null;
+        return userName != null && dietaryPreference != null && allergy != null ;
     }
 
     public boolean isMealValid() {

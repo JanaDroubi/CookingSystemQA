@@ -39,4 +39,7 @@ public class Manager extends Person {
         }
     }
 
+    public boolean isValid() {
+        return userName != null  ;
+    }
 }

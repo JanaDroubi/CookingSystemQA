@@ -11,10 +11,14 @@ public class loginsteps {
     public String name;
     public String pass;
 
+
     MyApplication obj;
     public loginsteps(MyApplication obj2) {
         super();
         this.obj = obj2;
+        obj.addCustomer(new CustomerProfile("wala", "wala123", "customer", "vegan","garlic"));
+        obj.addChef(new chef("chef1", "grilling", "chef1pass", "chef"));
+        obj.addManager(new Manager( "user88", "abc123", "kitchenManager"));
 
     }
 
@@ -26,26 +30,24 @@ public class loginsteps {
         obj.iAmNotInSystem(obj);
 
 
+
+
     }
     @When("the user enters username {string} and password {string}")
-    public void the_user_enters_username_and_password(String string, String string2) {
-        this.name=string;
-        this.pass=string2;
+    public void the_user_enters_username_and_password(String username, String password) {
 
-              obj.setUsernameAndPassAndPassFromSystem(name,pass);
-
+        obj.setUsernameAndPassAndPassFromSystem(username, password);
     }
+
     @Then("login should succeed for {string}")
-    public void login_should_succeed_for(String string) {
-
-   //     assertTrue("Login should succeed", obj.getValidation());
-
+    public void login_should_succeed_for(String username) {
+        assertTrue( obj.getValidation());
+      //  assertEquals("Logged in username mismatch", username, obj.getLoggedInUserRole().getRole());
     }
-    @Then("the user should be redirected to the {string} dashboard")
-    public void the_user_should_be_redirected_to_the_dashboard(String string) {
 
-        this.Role=string;
-    //    assertEquals(Role, obj.getLoggedInUserRole());
+    @Then("the user should be redirected to the {string} dashboard")
+    public void the_user_should_be_redirected_to_the_dashboard(String expectedRole) {
+        assertEquals("User role mismatch", expectedRole, obj.getLoggedInUserRole());
 
     }
 
@@ -61,12 +63,7 @@ public class loginsteps {
 
     }
 
-    @Then("login should fail with message {string}")
-    public void login_should_fail_with_message(String expectedMessage) {
 
-   //     assertFalse("Login should fail", obj.getValidation());
-   //    assertEquals(expectedMessage, obj.getMessage());
-    }
 
     @When("the user enters unkown username {string} and password {string}")
     public void the_user_enters_unkown_username_and_password(String string, String string2) {
@@ -104,6 +101,11 @@ public class loginsteps {
         obj.setUsernameAndPassAndPassFromSystem(name,pass);
     }
 
+    @Then("login should fail with message {string}")
+    public void login_should_fail_with_message(String expectedMessage) {
 
+        assertFalse("Login should fail", obj.getValidation());
+        assertEquals(expectedMessage, obj.getMessage());
+    }
 
 }

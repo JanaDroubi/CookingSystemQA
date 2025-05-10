@@ -29,4 +29,8 @@ public class chef extends Person {
     public int getTaskCount() {
         return assignedTasks.size();
     }
+
+    public boolean isValid() {
+        return userName != null && expertise != null ;
+    }
 }

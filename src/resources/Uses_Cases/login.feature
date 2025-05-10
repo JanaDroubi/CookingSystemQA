@@ -11,7 +11,7 @@ Feature: Login functionality for users
     Examples:
       | username | password  | role           |
       | wala     | wala123   | customer       |
-      | chef1    | chefpass  | chef           |
+      | chef1    | chef1pass  | chef          |
       | user88   | abc123    | kitchenManager |
 
   Scenario Outline: Failed login due to wrong password

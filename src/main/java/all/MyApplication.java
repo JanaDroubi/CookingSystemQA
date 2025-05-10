@@ -121,7 +121,7 @@ public class MyApplication {
 
         if (name.isEmpty() && pass.isEmpty()) {
             message = "Username and password cannot be empty";
-            return;
+            return ;
         }
 
         if (name.isEmpty()) {
@@ -133,21 +133,6 @@ public class MyApplication {
             message = "Password cannot be empty";
             return;
         }
-
-/*        for (Person user : users) {
-            if (user.getUserName().equals(name)) {
-                if (user.getPass().equals(pass)) {
-                    validation = true;
-                    loggedInUser = user;
-                    message = "User Found";
-                    return;
-                } else {
-                    message = "Incorrect password";
-                    return;
-                }
-            }
-            }
-        */
 
         for (chef chef : chefs) {
             if (chef.getUserName().equals(name)) {
@@ -161,14 +146,14 @@ public class MyApplication {
                     return;
                 }
             }
-
         }
 
-        for (Manager Manager : managers) {
-            if (Manager.getUserName().equals(name)) {
-                if (Manager.getPass().equals(pass)) {
+// Then check managers
+        for (Manager manager : managers) {
+            if (manager.getUserName().equals(name)) {
+                if (manager.getPass().equals(pass)) {
                     validation = true;
-                    loggedInUser = Manager;
+                    loggedInUser = manager;
                     message = "Manager Found";
                     return;
                 } else {
@@ -176,7 +161,21 @@ public class MyApplication {
                     return;
                 }
             }
+        }
 
+// Finally check customers
+        for (CustomerProfile customer : customers) {
+            if (customer.getUserName().equals(name)) {
+                if (customer.getPass().equals(pass)) {
+                    validation = true;
+                    loggedInUser = customer;
+                    message = "Customer Found";
+                    return;
+                } else {
+                    message = "Incorrect password";
+                    return;
+                }
+            }
         }
 
 
@@ -239,6 +238,23 @@ public class MyApplication {
     public void addCustomer(CustomerProfile c) {
         if (c != null && c.isValid()) {
             customers.add(c);
+            System.out.println("✅ Customer added: " + c.getUserName());
+        } else {
+            System.out.println("❌ Invalid customer object.");
+        }
+    }
+
+    public void addChef(chef c) {
+        if (c != null && c.isValid()) {
+            chefs.add(c);
+            System.out.println("✅ Customer added: " + c.getUserName());
+        } else {
+            System.out.println("❌ Invalid customer object.");
+        }
+    }
+    public void addManager(Manager c) {
+        if (c != null && c.isValid()) {
+            managers.add(c);
             System.out.println("✅ Customer added: " + c.getUserName());
         } else {
             System.out.println("❌ Invalid customer object.");
