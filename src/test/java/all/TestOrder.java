@@ -1,46 +1,46 @@
 package all;
 
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.When;
-import io.cucumber.java.en.Then;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestOrder {
+class TestOrder {
 
     private CustomerProfile customer;
     private meal meal;
     private order order;
 
-    @Given("a customer with username {string} and a meal {string}")
-    public void customer_and_meal(String username, String mealName) {
-        customer = new CustomerProfile(username, "password123", "customer", "vegetarian", "peanuts");
-        meal = new meal(mealName, null);
+    @BeforeEach
+    void setUp() {
+        // Initialize test data
+        customer = new CustomerProfile("john_doe", "password123", "customer", "vegetarian", "peanuts");
+        meal = new meal("Veggie Burger", null); // Example meal with price
         order = new order(customer, meal);
     }
 
-    @When("the order is created")
-    public void create_order() {
-        order = new order(customer, meal);
-    }
-
-    @Then("the order price should match the meal price")
-    public void verify_order_price() {
+    @Test
+    void testOrderPrice() {
+        // Verify that the order price matches the meal price
         assertEquals(meal.getPrice(), order.getPrice(), "The order price should match the meal price.");
     }
 
-    @Then("the order should belong to the customer {string}")
-    public void verify_customer_in_order(String username) {
-        assertEquals(customer.userName, order.getCustomer().userName, "The customer should be correctly assigned.");
+    @Test
+    void testGetCustomer() {
+        // Verify that the correct customer is associated with the order
+        assertEquals(customer, order.getCustomer(), "The customer in the order should be the same as the one assigned.");
     }
 
-    @Then("the order should contain the meal {string}")
-    public void verify_meal_in_order(String mealName) {
-        assertEquals(meal.getName(), order.getMeal().getName(), "The meal should be correctly assigned.");
+    @Test
+    void testGetMeal() {
+        // Verify that the correct meal is associated with the order
+        assertEquals(meal, order.getMeal(), "The meal in the order should be the same as the one assigned.");
     }
 
-    @Then("the order summary should be correct")
-    public void verify_order_summary() {
-        String expected = "🧑 " + customer.userName + " ordered 🍽 " + meal.getName();
-        assertEquals(expected, order.toString(), "The order summary should be correctly formatted.");
+    @Test
+    void testToString() {
+        // Verify that the toString method returns the correct order summary
+        String expected = "🧑 john_doe ordered 🍽 Veggie Burger";
+        assertEquals(expected, order.toString(), "The toString method should return the correct order details.");
     }
 }
