@@ -3,9 +3,9 @@ package all;
 import java.util.*;
 
 public class MyApplication {
-    ////
-/////
-    //////
+
+
+
     ///////////////log in/////////////////////////////
     //private final List<Person> users;
     public static List<chef> chefs = new ArrayList<>(); // array of ches
@@ -29,11 +29,11 @@ public class MyApplication {
        // users = new ArrayList<>();
         // mock users
 
-        CustomerProfile alice = new CustomerProfile("Alice", "Vegetarian", "Nuts");
-        CustomerProfile mark = new CustomerProfile("Mark", "Vegan", "Dairy");
-        CustomerProfile emily = new CustomerProfile("Emily", "Vegetarian", "None");
-        CustomerProfile tom = new CustomerProfile("Tom", "Low Carb", "Gluten");
-        CustomerProfile jake = new CustomerProfile("Jake", "High Protein", "Eggs");
+        CustomerProfile alice = new CustomerProfile("Alice", "123", "customer", "Vegetarian", "Nuts");
+        CustomerProfile mark  = new CustomerProfile("Mark", "1234", "customer", "Vegan", "Dairy");
+        CustomerProfile emily = new CustomerProfile("Emily", "1234", "customer", "Vegetarian", "None");
+        CustomerProfile tom   = new CustomerProfile("Tom", "1234", "customer", "Low Carb", "Gluten");
+        CustomerProfile jake  = new CustomerProfile("Jake", "1234", "customer", "High Protein", "Eggs");
 
 
 
@@ -47,11 +47,6 @@ public class MyApplication {
 
 
 
-
-
-//        users.add(new Person("wala", "wala123", "customer"));
-//        users.add(new Person("chef1", "chefpass", "chef"));
-//        users.add(new Person("user88", "abc123", "kitchenManager"));
 
 
         chefs.add(new chef("chef1", "grilling", "chef1pass", "chef"));
@@ -244,7 +239,7 @@ public class MyApplication {
     public void addCustomer(CustomerProfile c) {
         if (c != null && c.isValid()) {
             customers.add(c);
-            System.out.println("✅ Customer added: " + c.getName());
+            System.out.println("✅ Customer added: " + c.getUserName());
         } else {
             System.out.println("❌ Invalid customer object.");
         }
@@ -253,7 +248,7 @@ public class MyApplication {
 
     public CustomerProfile getProfileByName(String name) {
         for (CustomerProfile profile : customers) {
-            if (profile.getName().equalsIgnoreCase(name)) {
+            if (profile.getUserName().equalsIgnoreCase(name)) {
                 return profile;
             }
         }
@@ -466,7 +461,7 @@ public class MyApplication {
     }
 
     private void alertChef(CustomerProfile customer, Ingredient original, Ingredient substitute) {
-        System.out.printf("👨‍🍳 Chef Alert: %s's order substituted %s with %s.%n", customer.getName(), original.getName(), substitute.getName());
+        System.out.printf("👨‍🍳 Chef Alert: %s's order substituted %s with %s.%n", customer.getUserName(), original.getName(), substitute.getName());
 
     }
 
@@ -476,7 +471,7 @@ public class MyApplication {
             return;
         }
 
-        System.out.println("\n🍽️ Meals safe for " + customer.getName() + " (Allergy: " + customer.getAllergy() + "):");
+        System.out.println("\n🍽️ Meals safe for " + customer.getUserName() + " (Allergy: " + customer.getAllergy() + "):");
 
         int count = 0;
         for (int i = 0; i < meals.size(); i++) {

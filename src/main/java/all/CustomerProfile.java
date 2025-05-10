@@ -1,20 +1,14 @@
 package all;
 
-public class CustomerProfile{
+public class CustomerProfile extends Person {
 
-
-    private String name;
     private String dietaryPreference;
     private String allergy;
 
-    public CustomerProfile(String name, String dietaryPreference, String allergy) {
-        this.name = name;
+    public CustomerProfile(String userName, String pass, String role, String dietaryPreference, String allergy) {
+        super(userName, pass, role);
         this.dietaryPreference = dietaryPreference;
         this.allergy = allergy;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getDietaryPreference() {
@@ -26,11 +20,10 @@ public class CustomerProfile{
     }
 
     public boolean isValid() {
-        return name != null && dietaryPreference != null && allergy != null;
+        return userName != null && dietaryPreference != null && allergy != null;
     }
 
     public boolean isMealValid() {
         return !dietaryPreference.toLowerCase().contains(allergy.toLowerCase());
     }
-
 }

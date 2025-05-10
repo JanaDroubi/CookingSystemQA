@@ -5,17 +5,17 @@ Feature: Customer
     Given the customer "<Customer>" is logged in
     And a customer wants to input their dietary preferences
     When the preference details:
-      | Customer Name | Dietary Preference | Allergy  |
-      | <Customer>   | <Preference>       | <Allergy> |
+      | Customer Name | Dietary Preference | Allergy  | pass |
+      | <Customer>   | <Preference>       | <Allergy> |  <pass> |
     Then the system should store their preferences
     And ensure meals do not contain restricted ingredients
     And the system should only show meals matching their dietary needs
 
 
     Examples:
-      | Customer | Preference  | Allergy  |
-      | Alice    | Vegetarian  | Nuts     |
-      | Mark     | Vegan       | Dairy    |
+      | Customer | Preference  | Allergy  | pass|
+      | Alice    | Vegetarian  | Nuts     |     |
+      | Mark     | Vegan       | Dairy    |     |
 
 
   Scenario Outline: Track past orders and meal plans

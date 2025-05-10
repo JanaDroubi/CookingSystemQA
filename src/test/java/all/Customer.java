@@ -36,6 +36,7 @@ public class Customer {
     private String unavailableIngredient;
     private String suggestedSubstitution;
     private String substitutionApproval;
+    private String pass;
 
     //  Store dietary preferences
     @Given("the customer {string} is logged in")
@@ -58,9 +59,10 @@ public class Customer {
         this.customerName = data.get("Customer Name");
         this.dietaryPreference = data.get("Dietary Preference");
         this.allergyInfo = data.get("Allergy");
+        this.pass=data.get("pass");
 
         // Add profile logic once
-        CustomerProfile customer = new CustomerProfile(customerName, dietaryPreference, allergyInfo);
+        CustomerProfile customer = new CustomerProfile(customerName, dietaryPreference, allergyInfo ,pass);
         obj.addCustomer(customer);// or obj.addCustomerProfile(...)
 
         System.out.println("✅ Customer profile created and saved for: " + customerName);
