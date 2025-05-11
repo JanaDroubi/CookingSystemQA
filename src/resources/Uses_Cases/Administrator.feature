@@ -1,23 +1,37 @@
-Feature: System Administrator Functions
+Feature: Admin Functionality
+  As an administrator
+  I want to manage and analyze order history
+  So that I can understand customer preferences and business performance
 
   Background:
-    Given the system is monitoring ingredient stock levels in real-time
-    And the system administrator has set the low stock threshold to 10 units
-    And the system administrator has set the critical stock threshold to 5 units
+    Given an admin user "admin1" with password "secure123"
+    And the following order history exists:
+      | Customer   | Orders                          |
+      | john_doe   | Burger, Fries, Soda             |
+      | jane_smith | Pizza, Soda, Salad              |
+      | mike_jones | Burger, Soda, Fries, Ice Cream |
 
-  Scenario: Generate financial reports
-    Given the system administrator requests financial data for "Q1 2023"
-    When they generate the financial report
-    Then the system should provide a report containing:
-      | revenue | expenses | profit |
-      | 15000.0 | 8000.0   | 7000.0 |
+  Scenario: View complete order history
+    When I view all order history as admin
+    Then I should see the complete order history including:
+      | Customer   | Orders                          |
+      | john_doe   | Burger, Fries, Soda             |
+      | jane_smith | Pizza, Soda, Salad              |
+      | mike_jones | Burger, Soda, Fries, Ice Cream |
 
-  Scenario: Analyze customer trends
-    Given the system administrator wants to analyze customer trends
-    When they run the trend analysis report
-    Then they should see popular meals and ordering patterns
+  Scenario: View empty order history
+    Given an admin user "admin1" with password "secure123"
+    And there are no orders in the history
+    When I view all order history as admin
+    Then I should see a message indicating no orders found
 
-  Scenario: Monitor inventory alerts
-    Given an ingredient "Olive Oil" is below threshold
-    When the system administrator checks inventory alerts
-    Then they should see an alert for "Olive Oil"
+  Scenario: Analyze popular meals
+    When I analyze meal popularity as admin
+    Then I should see the following meal frequency:
+      | Meal      | Frequency |
+      | Soda      | 3         |
+      | Burger    | 2         |
+      | Fries     | 2         |
+      | Pizza     | 1         |
+      | Salad     | 1         |
+      | Ice Cream | 1         |
