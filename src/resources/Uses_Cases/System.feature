@@ -1,5 +1,4 @@
 Feature: System Automated Inventory and Ordering Behavior
-
   As a system,
   I want to manage inventory automatically,
   So that kitchen operations can run efficiently without delays.

@@ -122,7 +122,7 @@ public class KitchenManagerStepDef {
 
     @Then("the system displays:")
     public void verifyDisplay(String expectedOutput) {
-      //  assertEquals(normalizeString(expectedOutput), normalizeString(systemResponse));
+        //  assertEquals(normalizeString(expectedOutput), normalizeString(systemResponse));
     }
 
     @Then("any recipe containing {string} is marked {string}")
@@ -297,7 +297,7 @@ public class KitchenManagerStepDef {
     public void system_shows(String expectedMessage) {
         String normalizedExpected = expectedMessage.replace("\r\n", "\n").trim();
         String normalizedActual = orderAttemptResponse.replace("\r\n", "\n").trim();
-       // assertEquals(normalizedExpected, normalizedActual);
+        // assertEquals(normalizedExpected, normalizedActual);
     }
 
     @Then("prevents checkout until resolved")

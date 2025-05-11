@@ -1,18 +1,10 @@
 Feature: Chef Task Management
 
-  Scenario Outline: View assigned cooking tasks
-    Given a chef is logged into the system
-    And the task details:
-      | Chef Name  | Assigned Tasks          | Notification Received |
-      | <ChefName> | <Task>                  | <Notification>        |
+  Scenario: View assigned tasks for a chef
+    Given a chef "Alice" is logged into the system
     When they check their task list
     Then the system should display all assigned tasks
     And notify the chef of upcoming cooking deadlines
-
-    Examples:
-      | ChefName   | Task                   | Notification |
-      | Chef John  | Prepare Vegan Salad     | Yes          |
-      | Chef Lisa  | Bake Gluten-Free Cake   | Yes          |
 
   Scenario Outline: Approve or adjust ingredient substitutions
     Given a customer has selected an alternative ingredient

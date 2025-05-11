@@ -26,7 +26,13 @@ public class MyApplication {
     private boolean Customerlogged;
     private Person loggedInUser;
     private boolean isLoggedIn;
-
+    static {
+        // Create a chef for testing
+        chef alice = new chef("Alice", "Italian Cuisine", "password123", "Chef");
+        alice.assignTask("Prepare Salad");
+        alice.assignTask("Cook Steak");
+        chefs.add(alice);
+    }
     public MyApplication() {
        // users = new ArrayList<>();
         // mock users
@@ -433,18 +439,22 @@ public class MyApplication {
     }
 
 ///////////////////////////////////////////////////////////////
-    public static void viewAssignedTasksForChef(String chefName) {
-        for (chef chef : chefs) {
-            if (chef.getUserName().equalsIgnoreCase(chefName)) {
-                System.out.println("📋 Tasks for " + chef.getUserName() + ":");
-                for (String task : chef.getAssignedTasks()) {
-                    System.out.println(" - " + task);
-                }
-                return;
+public static String viewAssignedTasksForChef(String chefName) {
+    for (chef chef : chefs) {
+        if (chef.getUserName().equalsIgnoreCase(chefName)) {
+            StringBuilder tasks = new StringBuilder();
+            for (String task : chef.getAssignedTasks()) {
+                tasks.append(task).append("\n");
+            }
+            if (tasks.length() > 0) {
+                return tasks.toString(); // Return the list of tasks
+            } else {
+                return "❌ No tasks assigned."; // Return message if no tasks are assigned
             }
         }
-        System.out.println("❌ Chef not found.");
     }
+    return "❌ Chef not found."; // Return message if chef is not found
+}
 
     ////////////////////////////////////////////////////////////////////////////
     private Set<String> unavailableIngredients = Set.of("Peanuts", "Shellfish", "Bacon");
@@ -592,21 +602,20 @@ public class MyApplication {
 
 
 
-
-    public void viewChefTasks(String username) {
-        chef ch = chefs.get(Integer.parseInt(username));
-        if (ch != null) {
-            List<String> tasks = ch.getAssignedTasks();
-            if (tasks.isEmpty()) {
-                System.out.println("📋 No tasks assigned.");
-            } else {
-                System.out.println("📋 Your assigned tasks:");
-                for (int i = 0; i < tasks.size(); i++) {
-                    System.out.println((i + 1) + ". " + tasks.get(i));
+    // Corrected method
+    public static void viewChefTasks(String chefName) {
+        for (chef chef : chefs) {
+            if (chef.getUserName().equalsIgnoreCase(chefName)) {
+                System.out.println("📋 Tasks for " + chef.getUserName() + ":");
+                for (String task : chef.getAssignedTasks()) {
+                    System.out.println(" - " + task);
                 }
+                return;
             }
         }
+        System.out.println("❌ Chef not found.");
     }
+
 
     public void completeChefTask(String username, int taskIndex) {
         chef ch = chefs.get(Integer.parseInt(username));

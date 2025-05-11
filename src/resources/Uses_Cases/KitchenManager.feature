@@ -1,7 +1,7 @@
 Feature: Special Cook Project Management System
-  As a customer, chef, or kitchen manager
-  I want an efficient system to handle meal planning, ingredient sourcing, scheduling, and customer preferences
-  So that cooking projects can be managed seamlessly
+As a customer, chef, or kitchen manager
+I want an efficient system to handle meal planning, ingredient sourcing, scheduling, and customer preferences
+So that cooking projects can be managed seamlessly
 
   Scenario: Customer stores dietary preferences and allergies
     Given a new customer "John Doe" creates a profile
@@ -69,5 +69,3 @@ Feature: Special Cook Project Management System
       - Organic Tomatoes: 4 lbs (order 6 lbs)
       """
     And the "Order Now" button is enabled
-
-
