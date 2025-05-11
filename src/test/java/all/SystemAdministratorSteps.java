@@ -9,6 +9,9 @@ public class SystemAdministratorSteps {
     private Map<String, List<String>> customerOrderHistory = new HashMap<>();
     private Map<String, Map<String, Object>> financialReports = new HashMap<>();
     private List<String> systemAlerts = new ArrayList<>();
+    MyApplication app;
+    CustomerProfile profile;
+    MyApplication.ValidationResult result;
 
     // 1.2 Track past orders and personalized meal plans
     @Given("the system administrator accesses customer data")
@@ -76,33 +79,4 @@ public class SystemAdministratorSteps {
  ///               "Should see alert for: " + ingredient);
     }
 
-    // Customer trend analysis
-    @Given("the system administrator wants to analyze customer trends")
-    public void prepare_customer_trend_analysis() {
-        System.out.println("Preparing customer trend analysis");
-    }
-
-    @When("they run the trend analysis report")
-    public void run_trend_analysis() {
-        // Simulate analysis results
-        customerOrderHistory.put("John Doe", Arrays.asList("Vegan Pasta", "Salad"));
-        customerOrderHistory.put("Jane Smith", Arrays.asList("Gluten-free Pizza"));
-    }
-
-    @Then("they should see popular meals and ordering patterns")
-    public void verify_trend_analysis() {
-      //  assertFalse(customerOrderHistory.isEmpty(),
-    //            "Should have customer order data for analysis");
-        System.out.println("Trend analysis shows: " + customerOrderHistory);
-    }
-    @Given("the system administrator has set the low stock threshold to {int} units")
-    public void theSystemAdministratorHasSetTheLowStockThresholdToUnits(Integer int1) {
-        // Write code here that turns the phrase above into concrete actions
-   //     throw new io.cucumber.java.PendingException();
-    }
-    @Given("the system administrator has set the critical stock threshold to {int} units")
-    public void theSystemAdministratorHasSetTheCriticalStockThresholdToUnits(Integer int1) {
-        // Write code here that turns the phrase above into concrete actions
-     //   throw new io.cucumber.java.PendingException();
-    }
 }

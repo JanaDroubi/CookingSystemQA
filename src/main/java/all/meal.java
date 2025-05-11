@@ -22,14 +22,15 @@ public class meal {
                 .anyMatch(ing -> ing.getName().equalsIgnoreCase(allergen));
     }
 
-    public boolean matchesDietaryPreference(String preference) {
-        return dietaryCategory.equalsIgnoreCase(preference);
-    }
+   // public boolean matchesDietaryPreference(String preference) {
+  //      return dietaryCategory.equalsIgnoreCase(preference);
+   // }
 
     @Override
     public String toString() {
         return name + " (" + dietaryCategory + ")";
     }
+
 }
 
 

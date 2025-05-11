@@ -5,6 +5,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SystemSteps {
+
     // State variables
     private final Set<String> lowStockItems = new HashSet<>();
     private final Set<String> criticallyLowStockItems = new HashSet<>();
@@ -12,7 +13,43 @@ public class SystemSteps {
     private final List<String> notifications = new ArrayList<>();
     private final Set<String> highPriorityItems = new HashSet<>();
     private boolean monitoringStock = false;
+/// /////////////////////
+     MyApplication app;
+     CustomerProfile profile;
+     MyApplication.ValidationResult result;
 
+    @Given("a customer profile with dietary preference {string}")
+    public void a_customer_profile_with_dietary_preference(String dietaryPreference) {
+        app = new MyApplication();
+        profile = new CustomerProfile("TestUser", "123", "customer", dietaryPreference, "None");
+    }
+
+    @When("the customer selects the ingredients {string}")
+    public void the_customer_selects_the_ingredients(String ingredients) {
+        result = app.validateCustomMeal(ingredients, profile);
+    }
+
+    @Then("the custom meal should be validated successfully")
+    public void the_custom_meal_should_be_validated_successfully() {
+        assertNotNull(result);
+        assertTrue(result.getValidatedIngredients().size() > 0);
+        System.out.println("✅ Custom meal validated successfully.");
+    }
+
+    @Then("the system should show an error indicating dietary mismatch")
+    public void the_system_should_show_an_error_indicating_dietary_mismatch() {
+        assertNotNull(result);
+        assertFalse(result.getValidatedIngredients().size() > 0);
+        System.out.println("❌ Dietary mismatch detected.");
+    }
+
+    @Then("the system should show an error indicating no valid ingredients")
+    public void the_system_should_show_an_error_indicating_no_valid_ingredients() {
+        assertNotNull(result);
+        assertEquals(0, result.getValidatedIngredients().size());
+        System.out.println("❌ No valid ingredients found.");
+    }
+/// ////////////////////
     // Background step
     @Given("the system is monitoring ingredient stock levels in real-time")
     public void the_system_is_monitoring_ingredient_stock_levels_in_real_time() {
@@ -128,5 +165,8 @@ public class SystemSteps {
                         .anyMatch(msg -> msg.startsWith("High-priority")),
                 "Escalation alert should be sent to kitchen manager");
     }
+
+
+
 
 }

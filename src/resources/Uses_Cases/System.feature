@@ -32,3 +32,21 @@ Feature: System Automated Inventory and Ordering Behavior
     Then it should immediately generate a high-priority purchase order
     And escalate the alert to the kitchen manager
 
+####################
+  Scenario: Validating a custom meal with valid ingredients
+    Given a customer profile with dietary preference "Vegan"
+    When the customer selects the ingredients "Tofu, Lettuce, Tomato"
+    Then the custom meal should be validated successfully
+
+  Scenario: Validating a custom meal with incompatible ingredients
+    Given a customer profile with dietary preference "Vegan"
+    When the customer selects the ingredients "Beef, Cheese, Lettuce"
+    Then the system should show an error indicating dietary mismatch
+
+  Scenario: Validating a custom meal with unavailable ingredients
+    Given a customer profile with dietary preference "Vegetarian"
+    When the customer selects the ingredients "Dragon Fruit"
+    Then the system should show an error indicating no valid ingredients
+
+
+    #############################

@@ -18,7 +18,6 @@ public class MyApplication {
      private  static final Map<CustomerProfile, List<order>> orderHistory = new HashMap<>();
     private static final List<order> allOrders = new ArrayList<>();
     private static final List<meal> meals=new ArrayList<>();
-    public static Manager testmanager = new Manager("test","test","test");
     private final List<String> notificationLog = new ArrayList<>();
 
     private String message;
@@ -687,7 +686,6 @@ public static String viewAssignedTasksForChef(String chefName) {
 
 
 
-
 //
 //    public void addMealToOrderHistory(CustomerProfile customer, String mealName) {
 //        meal matchedMeal = meals.stream()
@@ -875,4 +873,57 @@ public static String viewAssignedTasksForChef(String chefName) {
         return new ArrayList<>(meals); // Return a copy to prevent external modification
     }
 
+    // Method to view ingredient availability
+    public void viewIngredientAvailability(String username) {
+        System.out.println("\n🌿 Ingredient Availability:");
+        for (Ingredient ingredient : ingredients) {
+            System.out.println("🔹 " + ingredient.getName() + ": " + ingredient.getQuantity() + " units");
+        }
+    }
+
+
+/// //////////////////////////////////////////////////////
+    // Method to suggest ingredient substitutions
+    public void suggestIngredientSubstitutions(String username) {
+        System.out.println("\n🔄 Ingredient Substitutions:");
+        for (Ingredient ingredient : ingredients) {
+            if (ingredient.getAlternative() != null) {
+                System.out.println("🔹 " + ingredient.getName() + " ➡️ " + ingredient.getAlternative().getName());
+            }
+        }
+    }
+
+    // Method to view customer preferences
+    public void viewCustomerPreferences(String username) {
+        System.out.println("\n👥 Customer Preferences:");
+        for (CustomerProfile customer : customers) {
+            System.out.println("🔹 " + customer.getUserName() + " prefers: " + customer.getDietaryPreference());
+        }
+    }
+    // Method to view custom meal requests
+    public void viewCustomMealRequests(String username) {
+        System.out.println("\n🍽️ Custom Meal Requests:");
+        for (CustomerProfile customer : customers) {
+            System.out.println("🔹 " + customer.getUserName() + " requested a custom meal with preferences: " + customer.getDietaryPreference());
+        }
+    }
+    // Method to view past orders
+    public void viewPastOrders(String username) {
+        System.out.println("\n📜 Past Orders:");
+        if (orderHistory.containsKey(username)) {
+            for (order ord : orderHistory.get(username)) {
+                System.out.println("🔹 " + ord.toString());
+            }
+        } else {
+            System.out.println("❌ No past orders found.");
+        }
+    }
+
+    // Method to view meal plan suggestions
+    public void viewMealPlanSuggestions(String username) {
+        System.out.println("\n🍽️ Meal Plan Suggestions:");
+        for (meal meal : meals) {
+            System.out.println("🔹 " + meal.getName() + " (" + meal.getDietaryCategory() + ")");
+        }
+    }
 }

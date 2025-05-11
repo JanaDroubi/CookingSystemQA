@@ -77,12 +77,12 @@ public class Main {
                     System.out.println("👋 Logging out...");
                     return;
                 }
-            //    case 4 -> app.viewCustomMealRequests(username);
-            //    case 5 -> app.viewIngredientAvailability(username);
-            //    case 6 -> app.suggestIngredientSubstitutions(username);
-            //    case 7 -> app.viewCustomerPreferences(username);
-            //    case 8 -> app.viewPastOrders(username);
-            //    case 9 -> app.viewMealPlanSuggestions(username);
+                case 4 -> app.viewCustomMealRequests(username);
+                case 5 -> app.viewIngredientAvailability(username);
+                case 6 -> app.suggestIngredientSubstitutions(username);
+               case 7 -> app.viewCustomerPreferences(username);
+                case 8 -> app.viewPastOrders(username);
+                case 9 -> app.viewMealPlanSuggestions(username);
                 default -> System.out.println("❌ Invalid option. Try again.");
             }
         }

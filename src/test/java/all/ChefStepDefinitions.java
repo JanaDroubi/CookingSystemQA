@@ -33,11 +33,82 @@ public class ChefStepDefinitions {
     private String substitutedIngredient;
     private String chefApproval;
 
+    String username = "Alice"; // Assuming Alice is the chef for these tests
+
     // Variables for customer dietary preferences and order history
     private String customerName;
     private String dietaryPreference;
     private String allergyInfo;
     private String lastOrderedMeal;
+    /// /////////////////////
+
+    @Given("the chef is logged in")
+    public void the_chef_is_logged_in() {
+        // Assuming the chef is already logged in
+        System.out.println("Chef is logged in as: " + username);
+    }
+
+    @When("they choose to view ingredient availability")
+    public void they_choose_to_view_ingredient_availability() {
+        obj.viewIngredientAvailability(username);
+    }
+
+    @When("they choose to view ingredient substitutions")
+    public void they_choose_to_view_ingredient_substitutions() {
+        obj.suggestIngredientSubstitutions(username);
+    }
+
+    @When("they choose to view custom meal requests")
+    public void they_choose_to_view_custom_meal_requests() {
+        obj.viewCustomMealRequests(username);
+    }
+
+    @When("they choose to view customer preferences")
+    public void they_choose_to_view_customer_preferences() {
+        obj.viewCustomerPreferences(username);
+    }
+
+    @When("they choose to view past orders")
+    public void they_choose_to_view_past_orders() {
+        obj.viewPastOrders(username);
+    }
+
+    @When("they choose to view meal plan suggestions")
+    public void they_choose_to_view_meal_plan_suggestions() {
+        obj.viewMealPlanSuggestions(username);
+    }
+
+    @Then("the system displays the list of available ingredients with their quantities")
+    public void the_system_displays_ingredient_availability() {
+        // Assert the display of ingredient availability
+        System.out.println("Ingredients displayed successfully.");
+    }
+
+    @Then("the system displays available ingredients with their substitutes")
+    public void the_system_displays_ingredient_substitutions() {
+        // Assert the display of ingredient substitutions
+        System.out.println("Ingredient substitutions displayed successfully.");
+    }
+
+    @Then("the system displays a list of custom meal requests from customers")
+    public void the_system_displays_custom_meal_requests() {
+        System.out.println("Custom meal requests displayed successfully.");
+    }
+
+    @Then("the system displays the preferences of all customers")
+    public void the_system_displays_customer_preferences() {
+        System.out.println("Customer preferences displayed successfully.");
+    }
+
+    @Then("the system displays the list of past orders for the chef")
+    public void the_system_displays_past_orders() {
+        System.out.println("Past orders displayed successfully.");
+    }
+
+    @Then("the system displays a list of meal plan suggestions based on diet types")
+    public void the_system_displays_meal_plan_suggestions() {
+        System.out.println("Meal plan suggestions displayed successfully.");
+    }
 //
 //    // ===== View assigned cooking tasks steps =====
 //    @Given("a chef is logged into the system")

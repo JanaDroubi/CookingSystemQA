@@ -45,6 +45,39 @@ Feature: Chef Task Management
       | Customer | LastMeal               |
       | ALice    | Grilled Chicken Salad  |
       | Mark      | Gluten-Free Pasta      |
+
+##########################################
+
+  Scenario: Viewing Ingredient Availability
+    Given the chef is logged in
+    When they choose to view ingredient availability
+    Then the system displays the list of available ingredients with their quantities
+
+  Scenario: Suggesting Ingredient Substitutions
+    Given the chef is logged in
+    When they choose to view ingredient substitutions
+    Then the system displays available ingredients with their substitutes
+
+  Scenario: Viewing Custom Meal Requests
+    Given the chef is logged in
+    When they choose to view custom meal requests
+    Then the system displays a list of custom meal requests from customers
+
+  Scenario: Viewing Customer Preferences
+    Given the chef is logged in
+    When they choose to view customer preferences
+    Then the system displays the preferences of all customers
+
+  Scenario: Viewing Past Orders
+    Given the chef is logged in
+    When they choose to view past orders
+    Then the system displays the list of past orders for the chef
+
+  Scenario: Viewing Meal Plan Suggestions
+    Given the chef is logged in
+    When they choose to view meal plan suggestions
+    Then the system displays a list of meal plan suggestions based on diet types
+
 #
 #Feature: Notifications and Alerts
 #
