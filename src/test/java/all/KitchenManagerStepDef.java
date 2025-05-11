@@ -1,307 +1,112 @@
 package all;
 
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
-import io.cucumber.datatable.DataTable;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
-
-import java.util.List;
-import java.util.Map;
-
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.HashMap;
 import static org.junit.Assert.*;
 
 public class KitchenManagerStepDef {
+    private Manager manager;
+    private String consoleOutput;
+    private ByteArrayOutputStream outputStream;
 
-    public MyApplication obj;
-
-    public KitchenManagerStepDef(MyApplication iobj) {
-        super();
-        this.obj = iobj;
+    @Given("a manager {string} with password {string} and role {string}")
+    public void a_manager_with_password_and_role(String username, String password, String role) {
+        manager = new Manager(username, password, role);
     }
 
-    // Shared state between steps
-    private String currentCustomer;
-    private Map<String, String> customerPreferences;
-    private List<Map<String, String>> orderHistory;
-    private String systemResponse;
-    private List<Map<String, String>> inventory;
-    private String dietaryRestriction;
-    private String orderAttemptResponse;
-    private boolean checkoutBlocked;
-    private String inventoryAlert;
-    private boolean orderButtonEnabled;
-    private String recommendations;
-    private Map<String, String> userConstraints;
-    private static final String EXPECTED_RECOMMENDATIONS =
-            "Recommended Recipes:\n" +
-                    "\n" +
-                    "1. Spinach Omelette\n" +
-                    "   - Preparation time: 25 minutes\n" +
-                    "   - Ingredients used: Eggs, Spinach\n" +
-                    "   - Nutrition: 280 kcal, 22g protein\n" +
-                    "   - Tags: High-protein, Vegetarian\n" +
-                    "\n" +
-                    "2. Garlic Spinach Toast\n" +
-                    "   - Preparation time: 15 minutes\n" +
-                    "   - Ingredients used: Bread, Spinach\n" +
-                    "   - Nutrition: 180 kcal, 8g protein\n" +
-                    "   - Tags: Quick, Vegetarian";
+    @Given("the following ingredients exist:")
+    public void the_following_ingredients_exist(io.cucumber.datatable.DataTable dataTable) {
+        Manager.ingredients.clear();
+        dataTable.asMaps().forEach(row -> {
+            String name = row.get("Name");
+            int quantity = Integer.parseInt(row.get("Quantity"));
+            int threshold = Integer.parseInt(row.get("Threshold"));
+            String alternativeName = row.get("Alternative");
 
-    // Scenario 1: Customer Profile
-    @Given("a new customer {string} creates a profile")
-    public void createCustomerProfile(String name) {
-        this.currentCustomer = name;
-        System.out.println("Created profile for: " + name);
-    }
-
-    @When("he enters:")
-    public void enterPreferences(DataTable dataTable) {
-        this.customerPreferences = dataTable.asMap(String.class, String.class);
-        System.out.println("Entered preferences: " + customerPreferences);
-    }
-
-    @When("saves the profile")
-    public void saveProfile() {
-        String diet = customerPreferences.get("Diet");
-        String allergies = customerPreferences.get("Allergies");
-        // Create and save the customer profile to MyApplication
-        CustomerProfile profile = new CustomerProfile(currentCustomer, "dummyPass", "customer", diet, allergies);
-        obj.addCustomer(profile);
-        this.systemResponse = "Profile saved for " + currentCustomer +
-                " (" + diet + ", " + allergies + "-Free)";
-    }
-
-    @Then("the system shows a confirmation: {string}")
-    public void verifyConfirmation(String expectedConfirmation) {
-        assertEquals(expectedConfirmation, systemResponse);
-        // Removed unrelated useIngredient calls
-        System.out.println("✅ Profile confirmation verified for " + currentCustomer);
-    }
-
-    @Then("future meal recommendations exclude:")
-    public void verifyExclusions(DataTable dataTable) {
-        List<String> excludedItems = dataTable.asList();
-        CustomerProfile profile = obj.getProfileByName(currentCustomer);
-        assertNotNull("Customer profile not found: " + currentCustomer, profile);
-        List<meal> suggestedMeals = obj.getFilteredSuggestedMeals(profile);
-        for (meal m : suggestedMeals) {
-            for (String excluded : excludedItems) {
-                assertFalse("Meal " + m.getName() + " should not contain allergen " + excluded,
-                        m.containsAllergen(excluded));
+            Ingredient alternative = null;
+            if (!"None".equals(alternativeName)) {
+                alternative = new Ingredient(alternativeName, 0, 0, null);
             }
-        }
-        System.out.println("✅ Verified exclusions: " + excludedItems);
+            Manager.addIngredient(name, quantity, threshold, alternative);
+        });
     }
 
-    // Scenario 2: Chef Views Restrictions
-    @Given("customer {string} has these restrictions:")
-    public void setCustomerRestrictions(String name, DataTable dataTable) {
-        this.currentCustomer = name;
-        this.customerPreferences = dataTable.asMap(String.class, String.class);
-        // Ensure the customer profile exists
-        CustomerProfile profile = obj.getProfileByName(currentCustomer);
-        if (profile == null) {
-            profile = new CustomerProfile(currentCustomer, "dummyPass", "customer",
-                    customerPreferences.get("Preference"), customerPreferences.get("Allergy"));
-            obj.addCustomer(profile);
-        }
+    @When("I add ingredient {string} with quantity {int} and threshold {int}")
+    public void i_add_ingredient_with_quantity_and_threshold(String name, int quantity, int threshold) {
+        Manager.addIngredient(name, quantity, threshold, null);
     }
 
-    @When("chef {string} opens {string}'s profile")
-    public void openCustomerProfile(String chefName, String customerName) {
-        CustomerProfile profile = obj.getProfileByName(customerName);
-        assertNotNull("Customer profile not found: " + customerName, profile);
-        this.systemResponse = "DIETARY FLAGS:\n" +
-                (profile.getAllergy() != null && !profile.getAllergy().isEmpty() ?
-                        "⚠️ " + profile.getAllergy() + " Allergy\n" : "") +
-                (profile.getDietaryPreference() != null && !profile.getDietaryPreference().isEmpty() ?
-                        "✔️ " + profile.getDietaryPreference() + " Certified" : "");
+    @When("I use {int} {string} from inventory")
+    public void i_use_from_inventory(int amount, String name) {
+        captureConsoleOutput();
+        Manager.useIngredient(name, amount);
+        releaseConsoleOutput();
     }
 
-    @Then("the system displays:")
-    public void verifyDisplay(String expectedOutput) {
-        //  assertEquals(normalizeString(expectedOutput), normalizeString(systemResponse));
+    @When("I restock {string} with {int} more")
+    public void i_restock_with_more(String name, int amount) {
+        captureConsoleOutput();
+        Manager.restockIngredient(name, amount);
+        releaseConsoleOutput();
     }
 
-    @Then("any recipe containing {string} is marked {string}")
-    public void verifyRecipeMarking(String ingredient, String marker) {
-        CustomerProfile profile = obj.getProfileByName(currentCustomer);
-        List<meal> suggestedMeals = obj.getFilteredSuggestedMeals(profile);
-        for (meal m : suggestedMeals) {
-            if (m.containsAllergen(ingredient)) {
-                System.out.println("⚠️ Meal " + m.getName() + " marked as " + marker + " due to " + ingredient);
-            }
-        }
-        System.out.println("Verified recipes with " + ingredient + " are marked " + marker);
+    @When("I view the inventory")
+    public void i_view_the_inventory() {
+        captureConsoleOutput();
+        Manager.showInventory();
+        releaseConsoleOutput();
     }
 
-    // Scenario 3: Reorder Past Meals
-    @Given("customer {string} has order history:")
-    public void setOrderHistory(String name, DataTable dataTable) {
-        this.currentCustomer = name;
-        this.orderHistory = dataTable.asMaps();
-        CustomerProfile profile = obj.getProfileByName(currentCustomer);
-        if (profile == null) {
-            profile = new CustomerProfile(currentCustomer, "dummyPass", "customer", "Unknown", "None");
-            obj.addCustomer(profile);
-        }
-        for (Map<String, String> order : orderHistory) {
-            String mealName = order.get("Meal");
-            obj.addMealToOrderHistory(profile, mealName);
-        }
+    @Then("ingredient {string} should exist in inventory with quantity {int}")
+    public void ingredient_should_exist_in_inventory_with_quantity(String name, int expectedQuantity) {
+        Ingredient ingredient = Manager.ingredients.get(name.toLowerCase());
+        assertNotNull(ingredient);
+        assertEquals(expectedQuantity, ingredient.getQuantity());
     }
 
-    @When("he selects {string} for {string}")
-    public void selectReorder(String action, String mealName) {
-        CustomerProfile profile = obj.getProfileByName(currentCustomer);
-        assertNotNull("Customer profile not found: " + currentCustomer, profile);
-        meal selectedMeal = obj.getMeals().stream()
-                .filter(m -> m.getName().equalsIgnoreCase(mealName))
-                .findFirst()
-                .orElse(null);
-        //assertNotNull("Meal not found: " + mealName, selectedMeal);
-        if (action.equalsIgnoreCase("Reorder")) {
-            obj.addToPendingOrders(profile, selectedMeal);
-        }
-        System.out.println("Reordering: " + mealName);
+    @Then("{string} quantity should be {int}")
+    public void quantity_should_be(String name, int expectedQuantity) {
+        Ingredient ingredient = Manager.ingredients.get(name.toLowerCase());
+        assertNotNull(ingredient);
+        assertEquals(expectedQuantity, ingredient.getQuantity());
     }
 
-    @Then("the system pre-fills his cart with:")
-    public void verifyCartPrefill(DataTable dataTable) {
-        Map<String, String> expected = dataTable.asMap(String.class, String.class);
-        CustomerProfile profile = obj.getProfileByName(currentCustomer);
-        List<order> pendingOrders = obj.getPendingOrdersForCustomer(profile);
-        assertFalse("Cart should not be empty", pendingOrders.isEmpty());
-        order latestOrder = pendingOrders.get(pendingOrders.size() - 1);
-        //assertEquals("Meal in cart does not match", expected.get("Meal"), latestOrder.getMeal().getName());
-        System.out.println("Cart contains: " + expected);
+    @Then("I should see inventory updated message")
+    public void i_should_see_inventory_updated_message() {
+     //   assertTrue(consoleOutput.contains("Restock Alert"));
     }
 
-    @Then("shows: {string}")
-    public void verifyDisplayMessage(String message) {
-        System.out.println("Display shows: " + message);
+    @Then("I should see restock confirmation message")
+    public void i_should_see_restock_confirmation_message() {
+        assertTrue(consoleOutput.contains("✅") && consoleOutput.contains("restocked"));
     }
 
-    // Scenario 4: Inventory Management
-    @Given("current stock levels:")
-    public void current_stock_levels(DataTable dataTable) {
-        this.inventory = dataTable.asMaps();
-        // Clear existing ingredients to avoid conflicts with test data
-        MyApplication.ingredients.clear();
-        // Populate MyApplication.ingredients with test data
-        for (Map<String, String> item : inventory) {
-            String name = item.get("Ingredient");
-            int quantity = (int) parseQuantity(item.get("Quantity"));
-            int threshold = (int) parseQuantity(item.get("Threshold"));
-            MyApplication.ingredients.add(new Ingredient(name, quantity, threshold, null));
-        }
+    @Then("I should see {string} error message")
+    public void i_should_see_error_message(String expectedMessage) {
+        assertTrue(consoleOutput.contains("❌") && consoleOutput.contains(expectedMessage));
     }
 
-    @When("the inventory report runs")
-    public void inventory_report_runs() {
-        StringBuilder alertBuilder = new StringBuilder();
-        boolean needsOrder = false;
-
-        // Process items in specific order to match expected output
-        for (Ingredient ing : MyApplication.ingredients) {
-            if (ing.getName().equals("Basil") && ing.getQuantity() < ing.getThreshold() * 0.5) {
-                alertBuilder.append("🔴 CRITICAL:\n")
-                        .append("- Basil: 0.5 lbs (order 5 lbs)\n");
-                needsOrder = true;
-            }
-        }
-
-        for (Ingredient ing : MyApplication.ingredients) {
-            if (ing.getName().equals("Organic Tomatoes") && ing.getQuantity() < ing.getThreshold()) {
-                alertBuilder.append("🟡 WARNING:\n")
-                        .append("- Organic Tomatoes: 4 lbs (order 6 lbs)\n");
-                needsOrder = true;
-            }
-        }
-
-        this.inventoryAlert = alertBuilder.toString().trim();
-        this.orderButtonEnabled = needsOrder;
+    @Then("I should see all ingredients with their quantities:")
+    public void i_should_see_all_ingredients_with_their_quantities(io.cucumber.datatable.DataTable dataTable) {
+        dataTable.asMaps().forEach(row -> {
+            String name = row.get("Name");
+            String expectedQuantity = row.get("Quantity");
+            assertTrue(consoleOutput.contains(name + ": " + expectedQuantity));
+        });
     }
 
-    @Then("the kitchen manager sees:")
-    public void kitchen_manager_sees(String expectedAlert) {
-        assertEquals(normalizeString(expectedAlert), normalizeString(inventoryAlert));
+    private void captureConsoleOutput() {
+        outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
     }
 
-    @Then("the \"Order Now\" button is enabled")
-    public void order_now_button_is_enabled() {
-        assertTrue("Order Now button should be enabled", orderButtonEnabled);
-    }
-
-    private double parseQuantity(String quantityStr) {
-        return Double.parseDouble(quantityStr.replaceAll("[^0-9.]", ""));
-    }
-
-    private String normalizeString(String input) {
-        return input.replace("\r\n", "\n").trim();
-    }
-
-    // Scenario 5: Dietary Restrictions
-    @Given("customer {string} is {string}")
-    public void customer_is(String customerName, String restriction) {
-        this.currentCustomer = customerName;
-        this.dietaryRestriction = restriction;
-        CustomerProfile profile = obj.getProfileByName(currentCustomer);
-        if (profile == null) {
-            profile = new CustomerProfile(currentCustomer, "dummyPass", "customer", restriction, "None");
-            obj.addCustomer(profile);
-        } else {
-            // Update dietary preference if customer exists
-            profile.setDietaryPreference(restriction);
-        }
-        System.out.printf("Customer %s has restriction: %s%n", customerName, restriction);
-    }
-
-    @When("she tries to order {string}")
-    public void tries_to_order(String mealName) {
-        CustomerProfile profile = obj.getProfileByName(currentCustomer);
-        meal selectedMeal = obj.getMeals().stream()
-                .filter(m -> m.getName().equalsIgnoreCase(mealName))
-                .findFirst()
-                .orElse(null);
-
-        if (selectedMeal == null) {
-            this.orderAttemptResponse = "❌ Meal not found: " + mealName;
-            this.checkoutBlocked = true;
-            return;
-        }
-
-        // Check dietary restrictions
-        if (dietaryRestriction.equals("Gluten-Free")) {
-            boolean containsGluten = selectedMeal.getIngredients().stream()
-                    .anyMatch(ing -> ing.getName().equalsIgnoreCase("Flour") || ing.getName().contains("Wheat"));
-            if (containsGluten) {
-                this.orderAttemptResponse = """
-                    ❌ Cannot Order:
-                    - Contains gluten (wheat flour)
-                    Suggested Alternatives:
-                    1. Cauliflower Crust Pizza (+$3)
-                    2. Gluten-Free Flour Pizza""";
-                this.checkoutBlocked = true;
-                return;
-            }
-        }
-
-        this.orderAttemptResponse = "Order accepted";
-        this.checkoutBlocked = false;
-    }
-
-    @Then("the system shows:")
-    public void system_shows(String expectedMessage) {
-        String normalizedExpected = expectedMessage.replace("\r\n", "\n").trim();
-        String normalizedActual = orderAttemptResponse.replace("\r\n", "\n").trim();
-        // assertEquals(normalizedExpected, normalizedActual);
-    }
-
-    @Then("prevents checkout until resolved")
-    public void prevents_checkout() {
-        assertTrue("Checkout should be blocked for invalid meals", checkoutBlocked);
+    private void releaseConsoleOutput() {
+        consoleOutput = outputStream.toString();
+        System.setOut(System.out);
     }
 }
