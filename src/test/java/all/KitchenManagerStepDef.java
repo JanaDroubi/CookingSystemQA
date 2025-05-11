@@ -81,6 +81,7 @@ public class KitchenManagerStepDef {
      //   assertTrue(consoleOutput.contains("Restock Alert"));
     }
 
+
     @Then("I should see restock confirmation message")
     public void i_should_see_restock_confirmation_message() {
         assertTrue(consoleOutput.contains("✅") && consoleOutput.contains("restocked"));
