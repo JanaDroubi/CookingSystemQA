@@ -40,3 +40,17 @@ Feature: Manager Inventory Management
       | Tomato    | 20       |
       | Onion     | 15       |
       | Chicken   | 10       |
+
+    #################
+  Scenario: Successfully assign a task to a chef with matching expertise
+    Given there are chefs with expertise "Italian Cuisine" and "Vegan"
+    When I assign a task "Prepare Salad" to a chef with expertise "Italian Cuisine"
+    Then the task should be assigned to a chef with "Italian Cuisine"
+
+  Scenario: No chef available with matching expertise
+    Given there are chefs with expertise "Grilling" and "Baking"
+    When I assign a task "Sushi Preparation" to a chef with expertise "Japanese"
+    Then the system should display "❌ No chef available with expertise: Japanese"
+
+
+    #######################

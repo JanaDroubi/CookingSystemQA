@@ -1,5 +1,7 @@
 package all;
 
+import io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonArray;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -108,9 +110,6 @@ public class MyApplication {
         meal greenSalad = new meal("Green Salad", List.of(lettuce, tomato, onion), "Vegan");
         meal classicToast = new meal("Classic Toast", List.of(flour, salt), "Vegetarian");
         meal dietSmoothie = new meal("Diet Smoothie", List.of(sugar, salt, tomato), "Vegan");
-
-
-
 
         meals.add(veganBowl);
         meals.add(beefBurger);
@@ -634,9 +633,9 @@ public static String viewAssignedTasksForChef(String chefName) {
         return chefs;
     }
 
-    public void setChefs(List<chef> chefs) {
-        this.chefs = chefs;
-    }
+    //public void setChefs(List<chef> chefs) {
+     //   this.chefs = chefs;
+   // }
 
 
     public Ingredient findalternative (String name ) {
@@ -684,6 +683,8 @@ public static String viewAssignedTasksForChef(String chefName) {
         System.out.println("   • Allergy   : " + customer.getAllergy());
     }
 
+    public List<Ingredient> getIngredients() { return ingredients;
+    }
 
 
 //
@@ -705,7 +706,7 @@ public static String viewAssignedTasksForChef(String chefName) {
 //    }
 
 
-
+/// ////////////////////يا ولاء ليش معرفة ليست هون
     public static class ValidationResult {
         private final List<Ingredient> validatedIngredients;
         private final List<Substitution> substitutions;

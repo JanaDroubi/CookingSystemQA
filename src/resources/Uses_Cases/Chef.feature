@@ -106,3 +106,26 @@ Feature: Chef Task Management
 #      | ChefName | Meal          | Substitution           | Alert |
 #      | Chef Alan| Vegan Burger  | Tofu for Tempeh        | Yes   |
 #      | Chef Nina| Pasta Alfredo | Cashew Cream for Dairy | Yes   |
+  Scenario: Searching for an alternative ingredient
+    Given the application has an ingredient "Garlic" with quantity 10
+    When I search for an alternative for ingredient "Garlic"
+    Then the system should display the alternative ingredient name
+
+  Scenario: Using an existing ingredient
+    Given the application has an ingredient "Cheese" with quantity 5
+    When I use the ingredient "Cheese" with quantity 2
+    Then the ingredient "Cheese" should have quantity 3
+
+  Scenario: Restocking an existing ingredient
+    Given the application has an ingredient "Tomato" with quantity 3
+    When I restock the ingredient "Tomato" with quantity 5
+    Then the ingredient "Tomato" should have quantity 8
+
+  Scenario: Completing a chef's task
+    Given the application has a chef "1" named "Chef John" with tasks:
+      | Prepare Salad |
+      | Cook Steak    |
+    When I complete the task at index 1 for chef "1"
+    Then the task "Prepare Salad" should be marked as completed
+    And the remaining tasks should be:
+      | Cook Steak |
