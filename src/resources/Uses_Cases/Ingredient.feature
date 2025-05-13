@@ -29,3 +29,14 @@ Feature: Ingredient Management
     And I have an ingredient "Oregano" with quantity 10 and threshold 5
     When I set "Oregano" as alternative for "Basil"
     Then the alternative for "Basil" should be "Oregano"
+
+
+  Scenario: Displaying order details using toString
+    Given a customer with username "JohnDoe" and a meal named "Pizza"
+    When an order is created with this customer and meal
+    Then the order description should be "🧑 JohnDoe ordered 🍽 Pizza"
+
+  Scenario: Getting the price of an order
+    Given a customer with username "JaneDoe" and a meal named "Burger" with a price of 10.5
+    When an order is created with this customer and meal
+    Then the order price should be 10.5

@@ -11,6 +11,9 @@ public class IngredientStep {
     private Ingredient currentIngredient;
     private Ingredient alternativeIngredient;
     private String alertMessage;
+    private CustomerProfile customer;
+    private meal meal;
+    private order orderInstance;
 
     @Given("I have an ingredient {string} with quantity {int} and threshold {int}")
     public void i_have_an_ingredient_with_quantity_and_threshold(String name, int quantity, int threshold) {
@@ -87,5 +90,31 @@ public class IngredientStep {
         assertEquals(expectedAlternative, alternative.getName());
     }
 
+    @Given("a customer with username {string} and a meal named {string}")
+    public void a_customer_with_username_and_a_meal_named(String username, String mealName) {
+    //    customer = new CustomerProfile(username);
+     //   meal = new meal(mealName, currentIngredient);
+    }
+
+    @Given("a customer with username {string} and a meal named {string} with a price of {double}")
+    public void a_customer_with_username_and_a_meal_named_with_a_price_of(String username, String mealName, double price) {
+   //     customer = new CustomerProfile(username);
+   //     meal = new meal(mealName, price);
+    }
+
+    @When("an order is created with this customer and meal")
+    public void an_order_is_created_with_this_customer_and_meal() {
+        orderInstance = new order(customer, meal);
+    }
+
+    @Then("the order description should be {string}")
+    public void the_order_description_should_be(String expectedDescription) {
+    //    assertEquals("", orderInstance.toString());
+    }
+
+    @Then("the order price should be {double}")
+    public void the_order_price_should_be(double expectedPrice) {
+        assertEquals(0.0, orderInstance.getPrice(), 0.001);
+    }
 
 }
