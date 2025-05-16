@@ -22,10 +22,21 @@ public class MyApplication {
     private static final List<meal> meals=new ArrayList<>();
     private final List<String> notificationLog = new ArrayList<>();
 
+
+    // Existing notification logs
+    private final Map<String, List<String>> chefNotifications = new HashMap<>();
+
+    // Existing invoice and financial data
+    private final Map<CustomerProfile, Double> customerInvoices = new HashMap<>();
+    private double totalRevenue = 0.0;
+
+    // New: Track current login state and user type
+    private String currentUserRole;
+
     private String message;
     private boolean validation;
     private boolean Customerlogged;
-    private Person loggedInUser;
+    static Person loggedInUser;
     private boolean isLoggedIn;
     static {
         // Create a chef for testing
@@ -182,9 +193,6 @@ public class MyApplication {
     }
 
 //
-//    public Map<String, List<String>> getOrderHistoryMap() {
-//        return orderHistory;
-//    }
 
     public void setUsernameAndPassAndPassFromSystem(String name, String pass) {
         validation = false;
@@ -927,4 +935,79 @@ public static String viewAssignedTasksForChef(String chefName) {
             System.out.println("🔹 " + meal.getName() + " (" + meal.getDietaryCategory() + ")");
         }
     }
+
+
+
+    public String generateInvoice(CustomerProfile customer) {
+        List<order> customerOrders = orderHistory.getOrDefault(customer, new ArrayList<>());
+        double total = 0.0;
+        StringBuilder invoice = new StringBuilder();
+        invoice.append("Invoice for ").append(customer.getUserName()).append(" (Date: ")
+                .append(new Date()).append(")\n");
+        invoice.append("--------------------------------\n");
+        for (order o : customerOrders) {
+            double mealCost = 10.0; // Placeholder cost per meal
+            total += mealCost;
+            invoice.append("- ").append(o.getMeal().getName()).append(": $").append(mealCost).append("\n");
+        }
+        invoice.append("Total: $").append(String.format("%.2f", total)).append("\n");
+        customerInvoices.put(customer, total);
+        totalRevenue += total;
+        return invoice.toString();
+    }
+
+    // Existing: Generate financial report
+    public String generateFinancialReport() {
+        StringBuilder report = new StringBuilder();
+        report.append("Financial Report (Date: ").append(new Date()).append(")\n");
+        report.append("--------------------------------\n");
+        report.append("Total Revenue: $").append(String.format("%.2f", totalRevenue)).append("\n");
+        report.append("Customer Invoices:\n");
+        for (Map.Entry<CustomerProfile, Double> entry : customerInvoices.entrySet()) {
+            report.append("- ").append(entry.getKey().getUserName()).append(": $")
+                    .append(String.format("%.2f", entry.getValue())).append("\n");
+        }
+        return report.toString();
+    }
+
+    // Existing: Send reminder to customer for upcoming delivery
+    public void sendDeliveryReminder(CustomerProfile customer, String mealName, Date deliveryDate) {
+        String message = String.format("Reminder: Your %s delivery is scheduled for %s. Be prepared!",
+                mealName, deliveryDate);
+        notificationLog.add(message);
+        System.out.println("📩 " + message + " to " + customer.getUserName());
+    }
+
+
+    // New: Login method to set the logged-in user and role
+    public void loginUser(Person user, String role) {
+        this.loggedInUser = user;
+        this.currentUserRole = role;
+        this.isLoggedIn = true;
+        System.out.println("🔐 User " + user.getUserName() + " logged in as " + role);
+    }
+//
+    // New: Logout method to clear the logged-in state
+    public void logoutUser() {
+        this.loggedInUser = null;
+        this.currentUserRole = null;
+        this.isLoggedIn = false;
+        System.out.println("🔓 User logged out");
+    }
+//
+    // New: Get the currently logged-in user
+    public Person getLoggedInUser() {
+        return loggedInUser;
+    }
+//
+//    // New: Get the current user role
+    public String getCurrentUserRole() {
+        return currentUserRole;
+    }
+
+
+    public List<String> getNotificationLog() {
+        return new ArrayList<>(notificationLog);
+    }
+
 }
