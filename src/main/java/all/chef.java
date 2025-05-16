@@ -32,6 +32,12 @@ public class chef extends Person {
         notifications.add(message);
         System.out.println("🔔 " + message + " to " + getUserName());
     }
+    public void assignTask1(String task) {
+        assignedTasks.add(task);
+        String message = "Task assigned: " + task;
+        notifications.add(message);
+        //System.out.println("🔔 " + message + " to " + getUserName());
+    }
 
     // Get task count
     public int getTaskCount() {

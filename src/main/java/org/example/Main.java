@@ -4,11 +4,12 @@ import all.*;
 
 import java.util.List;
 import java.util.*;
-
 public class Main {
+
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
         MyApplication app = new MyApplication();
 
         while (true) { // Infinite loop
@@ -38,7 +39,7 @@ public class Main {
 
             if (role.equalsIgnoreCase("chef")) {
                 chefMenu(app, scanner, username);
-            } else if (role.equalsIgnoreCase("managerj")) {
+            } else if (role.equalsIgnoreCase("manager")) {
                 kitchenManagerMenu(app, scanner);
 
             } else if (role.equalsIgnoreCase("customer")) {
@@ -53,8 +54,14 @@ public class Main {
 
 
    private static void chefMenu(MyApplication app, Scanner scanner, String username) {
-        System.out.println("\n👨‍🍳 Chef Menu 👨‍🍳");
-        while (true) {
+   //     System.out.println("\n👨‍🍳 Chef Menu 👨‍🍳");
+       while (true) {
+       // Login Process
+       System.out.println("╔═══════════════════════════════════════════════════════════════════════╗");
+       System.out.println("                           👨‍🍳 Chef Menu 👨‍🍳                               ");
+       System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
+
+
             System.out.println("1️⃣ View Assigned Tasks");
             System.out.println("2️⃣ Update Task Status");
             System.out.println("3️⃣ Logout");
@@ -65,7 +72,7 @@ public class Main {
             System.out.println("8️⃣ View Past Orders");
             System.out.println("9️⃣ View Meal Plan Suggestions");
 
-            System.out.print("👨‍🍳 Choose an option: ");
+            System.out.print("\n👨‍🍳 Choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // consume newline
 
@@ -94,6 +101,12 @@ public class Main {
 
     private static void kitchenManagerMenu(MyApplication app, Scanner scanner) {
         System.out.println("\n🍽️ Kitchen Manager Menu 🍽️");
+        // Login Process
+        System.out.println("╔═══════════════════════════════════════════════════════════════════════╗");
+        System.out.println("                      🍽️ Kitchen Manager Menu 🍽️                        ");
+        System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
+
+
         while (true) {
             System.out.println("1️⃣ View Inventory");
             System.out.println("2️⃣ Add Ingredient");
@@ -213,7 +226,6 @@ public class Main {
             }
         }
     }
-
 
     private static void customerMenu(MyApplication app, Scanner scanner, String username) {
         System.out.println("\n👤 Customer Dashboard 👤");

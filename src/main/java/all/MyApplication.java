@@ -41,10 +41,11 @@ public class MyApplication {
     static {
         // Create a chef for testing
         chef alice = new chef("Alice", "Italian Cuisine", "password123", "Chef");
-        alice.assignTask("Prepare Salad");
-        alice.assignTask("Cook Steak");
+        alice.assignTask1("Prepare Salad");
+        alice.assignTask1("Cook Steak");
         chefs.add(alice);
     }
+
     public MyApplication() {
        // users = new ArrayList<>();
         // mock users
@@ -77,7 +78,10 @@ public class MyApplication {
         managers.add(new Manager("manager2", "manager2pass", "manager"));
         managers.add(new Manager("manager3", "manager3pass", "manager"));
 
-
+        chefs.get(0).assignTask1("Prepare Salad");
+        chefs.get(0).assignTask1("Cook Steak");
+        chefs.get(1).assignTask1("Prepare Salad");
+        chefs.get(1).assignTask1("Cook Steak");
         // 🥦 Mock ingredients
         Ingredient tomato = new Ingredient("Tomato", 20, 10, new Ingredient("Red Pepper", 10, 5, null));
         Ingredient cheese = new Ingredient("Cheese", 5, 8, new Ingredient("Vegan Cheese", 10, 5, null));
