@@ -12,6 +12,8 @@ public class SupplierTest {
         private Ingredient ingredient;
         private Supplier supplier;
         private double price;
+
+
 //////////////////////////////
 
         @Given("a supplier named {string}")

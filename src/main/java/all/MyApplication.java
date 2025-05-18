@@ -189,6 +189,7 @@ public class MyApplication {
 
 
 
+
         Admin admin = new Admin("admin1", "adminpass");
 
 
@@ -343,32 +344,7 @@ public class MyApplication {
     }
 
 
-    private List<String> suggestedMeals = Arrays.asList(
-            "Mushroom Risotto",
-            "Almond Milk Smoothie",
-            "Lentil Stew",
-            "Vegan Tofu Stir-Fry",
-            "Grilled Chicken"
-    );
 
-//    public List<meal> getFilteredSuggestedMeals(CustomerProfile profile) {
-//        return meals.stream()
-//                .filter(m -> !m.containsAllergen(profile.getAllergy()))
-//                .filter(m -> m.getDietaryCategory().equalsIgnoreCase(profile.getDietaryPreference()))
-//                .collect(Collectors.toList());
-//    }
-
-
-    ////////////////////orders////////////////////////////
-
-
-   // private Map<String, List<String>> pendingOrders = new HashMap<>();
-
-
-//    public void addToPendingOrders( CustomerProfile b, meal m) {
-//        pendingOrders.add(new order(b, m));
-//        System.out.println("⚠️ Order added to pending list. Please confirm it before submission.");
-//    }
 
     public meal getMealByName(String mealName) {
         for (meal m : meals) {
@@ -380,53 +356,7 @@ public class MyApplication {
     }
 
 
-//    public List<order> getPendingOrdersForCustomer(CustomerProfile customer) {
-//        return pendingOrders.stream()
-//                .filter(order -> order.getCustomer().equals(customer))
-//                .toList();
-//    }
- //   public Map<CustomerProfile, List<order>>  getOrdersForCustomer(CustomerProfile customer) {
-  //      return orderHistory;
-   // }
 
-
-
-
-
-
-    ///////////////////////////////////history////////////////////////////
-//    private Map<String, List<String>> orderHistory = new HashMap<>();
-
-
-//    public void addMealToOrderHistory(String customerName, String meal) {
-//        orderHistory.putIfAbsent(customerName, new ArrayList<>());
-//        orderHistory.get(customerName).add(meal);
-//    }
-//
-//    public void reorderMeal(String customerName, String meal) {
-//        pendingOrders.putIfAbsent(customerName, new ArrayList<>());
-//        pendingOrders.get(customerName).add(meal);
-//
-//        System.out.println("⚠️ '" + meal + "' has been added to your pending orders.");
-//        System.out.println("Please confirm your order to send it to the chef.");
-//
-//    }
-//
-//    public List<String> getOrdersForCustomer(String customerName) {
-//        return orderHistory.getOrDefault(customerName, new ArrayList<>());
-//
-//
-//    }
-//
-//
-//    private Map<String, List<String>> allOrders = new HashMap<>();
-//
-//    public void addOrder(String customerName, String meal) {
-//
-//        allOrders.putIfAbsent(customerName, new ArrayList<>());
-//
-//        allOrders.get(customerName).add(meal);
-//    }
 
 /////////////////// kitchen manager ////////////////////
 
@@ -1013,5 +943,12 @@ public static String viewAssignedTasksForChef(String chefName) {
     public List<String> getNotificationLog() {
         return new ArrayList<>(notificationLog);
     }
+
+
+
+
+
+
+
 
 }

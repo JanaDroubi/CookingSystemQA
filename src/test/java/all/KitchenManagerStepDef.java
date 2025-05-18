@@ -13,7 +13,12 @@ public class KitchenManagerStepDef {
     private Manager manager;
     private String consoleOutput;
     private ByteArrayOutputStream outputStream;
-    MyApplication app = new MyApplication();
+    MyApplication app ;
+
+    public KitchenManagerStepDef(MyApplication obj) {
+        this.app = obj;
+
+    }
 
     @Given("there are chefs with expertise {string} and {string}")
     public void setupChefs(String expertise1, String expertise2) {
