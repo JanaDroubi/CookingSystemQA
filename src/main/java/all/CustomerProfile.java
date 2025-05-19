@@ -9,6 +9,7 @@ public class CustomerProfile extends Person {
         this.dietaryPreference = dietaryPreference;
         this.allergy = allergy;
     }
+
     public String getDietaryPreference() {
         return dietaryPreference;
     }
