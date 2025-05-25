@@ -240,7 +240,6 @@ public class Main {
             System.out.println("❌ Customer profile not found. Logging out...");
             return;
         }
-
         double totalPrice = 0.0;
 
         while (true) {
