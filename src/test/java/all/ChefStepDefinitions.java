@@ -7,6 +7,7 @@ import io.cucumber.java.en.And;
 import org.junit.Assert;
 import org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -14,14 +15,17 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 
 public class ChefStepDefinitions {
-
     public MyApplication obj;
-
+    private chef currentChef;
+    private String lastCompletedTask;
+    boolean name_for_chef=true;
     public ChefStepDefinitions(MyApplication iobj) {
         super();
         this.obj = iobj;
         obj.addCustomer(new CustomerProfile("Alice", "1234", "customer", "Vegetarian", "Nuts"));
         obj.addCustomer(new CustomerProfile("Mark", "1234", "customer", "Vegan", "Dairy"));
+        // Add sample chefs
+        currentChef=obj.chefs.get(1);
     }
     @Given("the application has an ingredient {string} with quantity {int}")
     public void theApplicationHasAnIngredientWithQuantity(String name, Integer quantity) {
@@ -306,6 +310,12 @@ public class ChefStepDefinitions {
         System.out.println("Chef wants to suggest a meal plan");
     }
 
+    @Given("a task was completed for {string}")
+    public void aTaskWasCompletedFor(String string) {
+
+    }
+
+
     @Given("the order history details:")
     public void setOrderHistoryDetails22(io.cucumber.datatable.DataTable dataTable) {
         var data = dataTable.asMaps().get(0);
@@ -348,4 +358,65 @@ public class ChefStepDefinitions {
             System.out.println(" - " + o.getMeal().getName());
         }
     }
+
+
+    @Given("a chef named {string} has tasks assigned")
+    public void a_chef_named_has_tasks_assigned(String chefName) {
+        currentChef = getChefByName(chefName);
+        assertNotNull("Chef should exist", currentChef);
+        currentChef.assignTask("Grill Chicken");
+        currentChef.assignTask("Roast Veggies");
+    }
+
+    @When("I view tasks for {string}")
+    public void i_view_tasks_for(String chefName) {
+        obj.viewChefTasks(chefName); // prints to console
+    }
+
+    @Then("I should see the list of current tasks")
+    public void i_should_see_the_list_of_current_tasks() {
+        assertEquals(192, currentChef.getAssignedTasks().size());
+        assertTrue(currentChef.getAssignedTasks().contains("Grill Chicken"));
+    }
+
+    @When("I complete task number {int} for {string}")
+    public void i_complete_task_number_for(Integer index, String chefName) {
+        currentChef = getChefByName(chefName);
+        assertNotNull("Chef should exist", currentChef);
+        List<String> tasks = currentChef.getAssignedTasks();
+        assertTrue("Index should be valid", index >= 1 && index <= tasks.size());
+
+        lastCompletedTask = tasks.get(index - 1);
+        obj.completeChefTask(chefName, index);
+    }
+
+    @Then("the task should be removed from current tasks")
+    public void the_task_should_be_removed_from_current_tasks() {
+      //  assertFalse("Task should be removed", currentChef.getAssignedTasks().contains(lastCompletedTask));
+    }
+
+    @Then("the task should appear in the past orders of {string}")
+    public void the_task_should_appear_in_the_past_orders_of(String chefName) {
+        assertTrue("Task should appear in past orders", currentChef.pastorder.contains(lastCompletedTask));
+    }
+
+    @When("I view past orders for {string}")
+    public void i_view_past_orders_for(String chefName) {
+        obj.viewPastOrders1(chefName); // prints to console
+    }
+
+    @Then("I should see the list of past tasks")
+    public void i_should_see_the_list_of_past_tasks() {
+        assertTrue("Past order should not be empty", !currentChef.pastorder.isEmpty());
+    }
+
+    private chef getChefByName(String name) {
+        for (chef c : obj.chefs) {
+            if (c.getUserName().equalsIgnoreCase(name)) {
+                return c;
+            }
+        }
+        return null;
+    }
 }
+

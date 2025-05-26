@@ -79,6 +79,7 @@ public class Main {
             switch (choice) {
                 case 1 -> app.viewChefTasks(username);
                 case 2 -> {
+                    app.viewChefTasks(username);
                     System.out.print("✏️ Enter task number to mark as complete: ");
                     int taskIndex = scanner.nextInt();
                     scanner.nextLine();
@@ -92,7 +93,7 @@ public class Main {
                 case 5 -> app.viewIngredientAvailability(username);
                 case 6 -> app.suggestIngredientSubstitutions(username);
                case 7 -> app.viewCustomerPreferences(username);
-                case 8 -> app.viewPastOrders(username);
+                case 8 -> app.viewPastOrders1(username);
                 case 9 -> app.viewMealPlanSuggestions(username);
                 default -> System.out.println("❌ Invalid option. Try again.");
             }
@@ -100,14 +101,16 @@ public class Main {
     }
 
     private static void kitchenManagerMenu(MyApplication app, Scanner scanner) {
-        System.out.println("\n🍽️ Kitchen Manager Menu 🍽️");
-        // Login Process
-        System.out.println("╔═══════════════════════════════════════════════════════════════════════╗");
-        System.out.println("                      🍽️ Kitchen Manager Menu 🍽️                        ");
-        System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
 
+        // Login Process
 
         while (true) {
+
+            System.out.println("╔═══════════════════════════════════════════════════════════════════════╗");
+            System.out.println("                      🍽️ Kitchen Manager Menu 🍽️                        ");
+            System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
+
+
             System.out.println("1️⃣ View Inventory");
             System.out.println("2️⃣ Add Ingredient");
             System.out.println("3️⃣ Use Ingredient");
@@ -240,9 +243,7 @@ public class Main {
             System.out.println("❌ Customer profile not found. Logging out...");
             return;
         }
-
         double totalPrice = 0.0;
-
         while (true) {
             System.out.println("1️⃣ Set Dietary Preferences and Allergies");
             System.out.println("2️⃣ View Past Orders and Reorder");

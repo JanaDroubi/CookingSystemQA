@@ -23,9 +23,6 @@ public class MyApplication {
     private final List<String> notificationLog = new ArrayList<>();
 
 
-    // Existing notification logs
-    private final Map<String, List<String>> chefNotifications = new HashMap<>();
-
     // Existing invoice and financial data
     private final Map<CustomerProfile, Double> customerInvoices = new HashMap<>();
     private double totalRevenue = 0.0;
@@ -78,10 +75,40 @@ public class MyApplication {
         managers.add(new Manager("manager2", "manager2pass", "manager"));
         managers.add(new Manager("manager3", "manager3pass", "manager"));
 
-        chefs.get(0).assignTask1("Prepare Salad");
-        chefs.get(0).assignTask1("Cook Steak");
-        chefs.get(1).assignTask1("Prepare Salad");
-        chefs.get(1).assignTask1("Cook Steak");
+        chefs.get(1).assignTask1("Grill chicken skewers");
+        chefs.get(1).assignTask1("Cook steak medium-rare");
+        chefs.get(1).assignTask1("Char vegetables for side dish");
+        chefs.get(1).assignTask1("Prepare BBQ sauce");
+        chefs.get(1).assignTask1("Grill lamb chops");
+        chefs.get(1).assignTask1("Smoke brisket");
+        chefs.get(1).assignTask1("Prepare grilled salmon");
+        chefs.get(1).assignTask1("Clean grill after use");
+        chefs.get(1).assignTask1("Prepare grilled pineapple dessert");
+        chefs.get(1).assignTask1("Marinate meat for kebabs");
+
+        chefs.get(2).assignTask1("Make vegan lasagna");
+        chefs.get(2).assignTask1("Prepare quinoa salad");
+        chefs.get(2).assignTask1("Cook tofu stir-fry");
+        chefs.get(2).assignTask1("Blend green detox smoothie");
+        chefs.get(2).assignTask1("Prepare lentil soup");
+        chefs.get(2).assignTask1("Make vegan burgers");
+        chefs.get(2).assignTask1("Roast chickpeas with spices");
+        chefs.get(2).assignTask1("Prepare cashew cheese spread");
+        chefs.get(2).assignTask1("Assemble rainbow veggie wraps");
+        chefs.get(2).assignTask1("Serve avocado chocolate mousse");
+
+        chefs.get(3).assignTask1("Bake chocolate cake");
+        chefs.get(3).assignTask1("Prepare sourdough bread");
+        chefs.get(3).assignTask1("Make croissants");
+        chefs.get(3).assignTask1("Decorate cupcakes");
+        chefs.get(3).assignTask1("Bake apple pie");
+        chefs.get(3).assignTask1("Whip cream for desserts");
+        chefs.get(3).assignTask1("Prepare cheesecake");
+        chefs.get(3).assignTask1("Make cinnamon rolls");
+        chefs.get(3).assignTask1("Pipe icing on cookies");
+        chefs.get(3).assignTask1("Bake gluten-free brownies");
+
+
         // 🥦 Mock ingredients
         Ingredient tomato = new Ingredient("Tomato", 20, 10, new Ingredient("Red Pepper", 10, 5, null));
         Ingredient cheese = new Ingredient("Cheese", 5, 8, new Ingredient("Vegan Cheese", 10, 5, null));
@@ -401,25 +428,6 @@ public static String viewAssignedTasksForChef(String chefName) {
 
 
 
-//    public boolean validateCustomMeal(String selectedIngredients, CustomerProfile profile) {
-//
-//        String[] selected = ingredients.Split(",\\s*");
-//        for (String ing : selected) {
-//            // 1. Check allergy
-//            if (profile.getAllergy().equalsIgnoreCase(ing)) {
-//                System.out.println("❌ Ingredient conflicts with allergy: " + ing);
-//                return false;
-//            }
-//            // 2. Check stock
-//            if (unavailableIngredients.contains(ing)) {
-//           System.out.println("⚠️ Ingredient unavailable: " + ing);
-//                return false;
-//            }
-//        }
-//        return true;
-//
-//
-//    }
 
 
     public double getPriceForIngredient(Ingredient ingredient) {
@@ -512,11 +520,12 @@ public static String viewAssignedTasksForChef(String chefName) {
 
     // Corrected method
     public static void viewChefTasks(String chefName) {
+        int count =1;
         for (chef chef : chefs) {
             if (chef.getUserName().equalsIgnoreCase(chefName)) {
                 System.out.println("📋 Tasks for " + chef.getUserName() + ":");
                 for (String task : chef.getAssignedTasks()) {
-                    System.out.println(" - " + task);
+                    System.out.println(count++ +" - " + task);
                 }
                 return;
             }
@@ -526,17 +535,47 @@ public static String viewAssignedTasksForChef(String chefName) {
 
 
     public void completeChefTask(String username, int taskIndex) {
-        chef ch = chefs.get(Integer.parseInt(username));
-        if (ch != null) {
-            List<String> tasks = ch.getAssignedTasks();
-            if (taskIndex > 0 && taskIndex <= tasks.size()) {
-                String completedTask = tasks.remove(taskIndex - 1);
-                System.out.println("✅ Task completed: " + completedTask);
-            } else {
-                System.out.println("❌ Invalid task number.");
+        for (chef chef : chefs) {
+            if (chef.getUserName().equalsIgnoreCase(username)) {
+                List<String> tasks = chef.getAssignedTasks();
+                int realIndex = taskIndex - 1; // adjust for 1-based index input
+
+                if (realIndex >= 0 && realIndex < tasks.size()) {
+                    String completedTask = tasks.get(realIndex);
+
+                    // Save to chef's past orders
+                    chef.pastorder.add(completedTask);
+
+                    // Remove from current tasks
+                    chef.removeTask(realIndex);
+
+                    System.out.println("✅ Task completed for " + chef.getUserName());
+
+                } else {
+                    System.out.println("❌ Invalid task index.");
+                }
+                return;
             }
         }
+        System.out.println("❌ Chef not found.");
     }
+    public void viewPastOrders1(String username) {
+        for (chef chef : chefs) {
+            if (chef.getUserName().equalsIgnoreCase(username)) {
+                System.out.println("\n📜 Past Orders for " + chef.getUserName() + ":");
+                if (chef.pastorder.isEmpty()) {
+                    System.out.println("❌ No past orders found.");
+                } else {
+                    for (String task : chef.pastorder) {
+                        System.out.println("🔹 " + task);
+                    }
+                }
+                return;
+            }
+        }
+        System.out.println("❌ Chef not found.");
+    }
+
 
 
     public List<chef> getChefs() {
