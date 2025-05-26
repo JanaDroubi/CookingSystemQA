@@ -211,20 +211,28 @@ public class Main {
                     app.assignTaskToChef(task, selectedExpertise);
                 }
                 case 6 -> {
-                    // Assuming you want to print tasks for all chefs
-                    List<chef> allChefs = app.getChefs(); // Get the list of all chefs (assuming app.getChefs() returns a list of chefs)
+                    List<chef> allChefs = app.getChefs(); // Get the list of all chefs
 
                     if (allChefs.isEmpty()) {
                         System.out.println("❌ No chefs available.");
                     } else {
-                        for (int i = 0; i < allChefs.size(); i++) {
-                            chef ch = allChefs.get(i);
-                            System.out.println("👨‍🍳 Tasks for Chef: " + ch.getUserName());
-                            app.viewChefTasks(String.valueOf(i)); // Call viewChefTasks with the chef index (or unique identifier)
-                            System.out.println(); // Add a blank line for better readability between chefs
+                        for (chef ch : allChefs) {
+                            System.out.println("👨‍🍳 Chef: " + ch.getUserName());
+
+                            List<String> tasks = ch.getAssignedTasks(); // Get tasks directly from the chef object
+                            if (tasks == null || tasks.isEmpty()) {
+                                System.out.println("📭 No tasks assigned.");
+                            } else {
+                                System.out.println("📋 Assigned Tasks:");
+                                for (int i = 0; i < tasks.size(); i++) {
+                                    System.out.println("  " + (i + 1) + ". " + tasks.get(i));
+                                }
+                            }
+                            System.out.println(); // For readability
                         }
                     }
                 }
+
 
                 case 7 -> {
                     System.out.println("👋 Logging out...");

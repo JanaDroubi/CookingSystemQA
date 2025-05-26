@@ -40,7 +40,7 @@ public class MyApplication {
         chef alice = new chef("Alice", "Italian Cuisine", "password123", "Chef");
         alice.assignTask1("Prepare Salad");
         alice.assignTask1("Cook Steak");
-        chefs.add(alice);
+       // chefs.add(alice);
     }
 
     public MyApplication() {
