@@ -241,7 +241,6 @@ public class Main {
             return;
         }
         double totalPrice = 0.0;
-
         while (true) {
             System.out.println("1️⃣ Set Dietary Preferences and Allergies");
             System.out.println("2️⃣ View Past Orders and Reorder");
