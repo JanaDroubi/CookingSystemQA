@@ -8,7 +8,9 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        MyApplication app = new MyApplication();
+        MyApplication app;
+        app = new MyApplication();
+
 
         while (true) { // Infinite loop
             System.out.println("╔═══════════════════════════════════════════════════════════════════════╗");
@@ -291,7 +293,6 @@ public class Main {
     private static void customerMenu(MyApplication app, Scanner scanner, String username) {
 
 
-        System.out.println("\n👤 Customer Menu 👤");
         // Login Process
         System.out.println("╔═══════════════════════════════════════════════════════════════════════╗");
         System.out.println("                      👤 Customer Menu 👤                        ");
@@ -303,6 +304,9 @@ public class Main {
             return;
         }
         double totalPrice = 0.0;
+        Random random = new Random(); // Initialize Random for generating prices
+        Map<String, Double> mealPrices = new HashMap<>(); // Store random prices for each meal name
+
         while (true) {
             System.out.println("1️⃣ Set Dietary Preferences and Allergies");
             System.out.println("2️⃣ View Past Orders and Reorder");
@@ -320,7 +324,6 @@ public class Main {
             switch (choice) {
                 case 1 -> {
                     System.out.println("🍽️ Set Your Dietary Preferences and Allergies:");
-                    // List of dietary preferences
                     String[] dietaryOptions = {"Vegetarian", "Vegan", "High Protein", "Low Carb", "None"};
                     System.out.println("Dietary Preferences:");
                     for (int i = 0; i < dietaryOptions.length; i++) {
@@ -337,7 +340,6 @@ public class Main {
                         System.out.println("✅ Dietary Preference set to: " + selectedDiet);
                     }
 
-                    // List of allergies
                     String[] allergyOptions = {"Nuts", "Dairy", "Gluten", "Eggs", "None"};
                     System.out.println("Allergies:");
                     for (int i = 0; i < allergyOptions.length; i++) {
@@ -363,8 +365,9 @@ public class Main {
                         while (true) {
                             for (int i = 0; i < orders.size(); i++) {
                                 order ord = orders.get(i);
-                                double mealPrice = app.calculateMealPrice(ord.getMeal().getIngredients());
-                                System.out.printf(" %d. %s - $%.2f%n", (i + 1), ord.getMeal().getName(), mealPrice);
+                                String mealName = ord.getMeal().getName();
+                                double mealPrice = mealPrices.computeIfAbsent(mealName, k -> 10.0 + (random.nextDouble() * 10.0)); // Random price between $10.00 and $20.00
+                                System.out.printf(" %d. %s - $%.2f%n", (i + 1), mealName, mealPrice);
                             }
                             System.out.println(" 0. Return to Menu");
                             System.out.print("📝 Enter the number of the meal to reorder (0 to exit): ");
@@ -378,7 +381,7 @@ public class Main {
                             order selectedOrder = orders.get(mealIndex - 1);
                             meal selectedMeal = selectedOrder.getMeal();
                             app.addToPendingOrders(customer, selectedMeal);
-                            double mealPrice = app.calculateMealPrice(selectedMeal.getIngredients());
+                            double mealPrice = mealPrices.get(selectedMeal.getName()); // Use stored price
                             totalPrice += mealPrice;
                             Calendar cal = Calendar.getInstance();
                             cal.setTime(new Date());
@@ -397,11 +400,12 @@ public class Main {
                         while (true) {
                             for (int i = 0; i < suggestedMeals.size(); i++) {
                                 meal m = suggestedMeals.get(i);
-                                double mealPrice = app.calculateMealPrice(m.getIngredients());
-                                System.out.printf(" %d. %s (%s) - $%.2f%n", (i + 1), m.getName(), m.getDietaryCategory(), mealPrice);
+                                String mealName = m.getName();
+                                double mealPrice = mealPrices.computeIfAbsent(mealName, k -> 10.0 + (random.nextDouble() * 10.0)); // Random price between $10.00 and $20.00
+                                System.out.printf(" %d. %s (%s) - $%.2f%n", (i + 1), mealName, m.getDietaryCategory(), mealPrice);
                             }
                             System.out.println(" 0. Return to Menu");
-                            System.out.print("📝 Enter the number of the meal to reorder (0 to exit): ");
+                            System.out.print("📝 Enter the number of the meal to order (0 to exit): ");
                             int mealIndex = scanner.nextInt();
                             scanner.nextLine();
                             if (mealIndex == 0) break;
@@ -411,7 +415,7 @@ public class Main {
                             }
                             meal selectedMeal = suggestedMeals.get(mealIndex - 1);
                             app.addToPendingOrders(customer, selectedMeal);
-                            double mealPrice = app.calculateMealPrice(selectedMeal.getIngredients());
+                            double mealPrice = mealPrices.get(selectedMeal.getName()); // Use stored price
                             totalPrice += mealPrice;
                             Calendar cal = Calendar.getInstance();
                             cal.setTime(new Date());
@@ -459,7 +463,8 @@ public class Main {
                     }
                     meal customMeal = new meal("Custom Meal for " + customer.getUserName(), validatedIngredients, customer.getDietaryPreference());
                     app.addToPendingOrders(customer, customMeal);
-                    double mealPrice = app.calculateMealPrice(customMeal.getIngredients());
+                    String customMealName = customMeal.getName();
+                    double mealPrice = mealPrices.computeIfAbsent(customMealName, k -> 10.0 + (random.nextDouble() * 10.0)); // Random price between $10.00 and $20.00
                     totalPrice += mealPrice;
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(new Date());
@@ -475,10 +480,11 @@ public class Main {
                     } else {
                         double pendingTotal = 0.0;
                         for (order o : pending) {
-                            double mealPrice = app.calculateMealPrice(o.getMeal().getIngredients());
+                            String mealName = o.getMeal().getName();
+                            double mealPrice = mealPrices.getOrDefault(mealName, 10.0 + (random.nextDouble() * 10.0)); // Use stored price or generate if not present
                             boolean hasSubstitution = o.getMeal().getIngredients().stream()
                                     .anyMatch(ing -> ing.getAlternative() != null && ing.getQuantity() < ing.getThreshold());
-                            System.out.printf(" - %s - $%.2f %s%n", o.getMeal().getName(), mealPrice,
+                            System.out.printf(" - %s - $%.2f %s%n", mealName, mealPrice,
                                     hasSubstitution ? "(Awaiting chef approval due to substitution)" : "");
                             pendingTotal += mealPrice;
                         }
