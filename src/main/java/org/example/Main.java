@@ -63,7 +63,7 @@ public class Main {
             System.out.println("1️⃣ View Assigned Tasks");
             System.out.println("2️⃣ Update Task Status");
             System.out.println("3️⃣ View Past Orders");
-            System.out.println("4️⃣ View Custom Meal Requests");
+            System.out.println("️4️⃣  ️Use Ingredient");
             System.out.println("5️⃣ View Ingredient Availability");
             System.out.println("6️⃣ Suggest Ingredient Substitutions");
             System.out.println("7️⃣ View Customer Preferences");
@@ -84,7 +84,15 @@ public class Main {
                     app.completeChefTask(username, taskIndex);
                 }
                 case 3 -> app.viewPastOrders1(username);
-                case 4 -> app.viewCustomMealRequests(username);
+                case 4 ->
+                {
+                    System.out.print("📝 Ingredient Name: ");
+                String name = scanner.nextLine();
+                System.out.print("📉 Quantity to use: ");
+                int qty = scanner.nextInt();
+                scanner.nextLine();
+                app.useIngredient(name, qty);
+                }
                 case 5 -> app.viewIngredientAvailability(username);
                 case 6 -> app.suggestIngredientSubstitutions(username);
                 case 7 -> app.viewCustomerPreferences(username);
@@ -107,10 +115,10 @@ public class Main {
             System.out.println("                      🍽️ Kitchen Manager Menu 🍽️                        ");
             System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
             if (noti==0){
-                   System.out.println("⚠️ You Have Meal");
+                   System.out.println("⚠️  Customer Mark Ordererd Green salad ");
                 noti++;
             }
-            if (noti==1){
+            if (noti==2 || noti==1){
                 System.out.println("⚠️ You Have pending Meal");
                 noti++;
             }
