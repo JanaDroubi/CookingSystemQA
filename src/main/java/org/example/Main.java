@@ -6,10 +6,8 @@ import java.util.List;
 import java.util.*;
 public class Main {
 
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
         MyApplication app = new MyApplication();
 
         while (true) { // Infinite loop
@@ -50,8 +48,6 @@ public class Main {
             }
         }
     }
-
-
 
     private static void chefMenu(MyApplication app, Scanner scanner, String username) {
    //     System.out.println("\n👨‍🍳 Chef Menu 👨‍🍳");
@@ -100,7 +96,7 @@ public class Main {
         }
     }
     private static void kitchenManagerMenu(MyApplication app, Scanner scanner) {
-
+        int noti = 0 ;
         // Login Process
 
         while (true) {
@@ -108,6 +104,10 @@ public class Main {
             System.out.println("╔═══════════════════════════════════════════════════════════════════════╗");
             System.out.println("                      🍽️ Kitchen Manager Menu 🍽️                        ");
             System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
+            if (noti==0){
+                   System.out.printf("⚠️ You Have notification");
+                noti++;
+            }
             System.out.println("1️⃣ View Inventory");
             System.out.println("2️⃣ Add Ingredient");
             System.out.println("3️⃣ Use Ingredient");
