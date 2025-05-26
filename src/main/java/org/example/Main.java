@@ -226,9 +226,15 @@ public class Main {
             }
         }
     }
-
     private static void customerMenu(MyApplication app, Scanner scanner, String username) {
-        System.out.println("\n👤 Customer Dashboard 👤");
+
+
+        System.out.println("\n👤 Customer Menu 👤");
+        // Login Process
+        System.out.println("╔═══════════════════════════════════════════════════════════════════════╗");
+        System.out.println("                      👤 Customer Menu 👤                        ");
+        System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
+
         CustomerProfile customer = app.getProfileByName(username);
         if (customer == null) {
             System.out.println("❌ Customer profile not found. Logging out...");
@@ -438,6 +444,5 @@ public class Main {
             }
         }
     }
-
 
 }

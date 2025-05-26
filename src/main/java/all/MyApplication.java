@@ -797,8 +797,16 @@ public static String viewAssignedTasksForChef(String chefName) {
 
     public List<meal> getFilteredSuggestedMeals(CustomerProfile profile) {
         return meals.stream()
-                .filter(m -> !m.containsAllergen(profile.getAllergy()))
-                .filter(m -> m.getDietaryCategory().equalsIgnoreCase(profile.getDietaryPreference()))
+                .filter(m -> {
+                    String dietaryPref = profile.getDietaryPreference();
+                    // If dietary preference is "None", skip dietary filtering
+                    boolean dietaryMatch = "None".equalsIgnoreCase(dietaryPref) ||
+                            m.getDietaryCategory().equalsIgnoreCase(dietaryPref);
+                    // If allergy is "None", skip allergen filtering
+                    boolean noAllergenConflict = "None".equalsIgnoreCase(profile.getAllergy()) ||
+                            !m.containsAllergen(profile.getAllergy());
+                    return dietaryMatch && noAllergenConflict;
+                })
                 .collect(Collectors.toList());
     }
 
