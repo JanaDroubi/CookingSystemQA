@@ -165,8 +165,4 @@ public class SystemSteps {
                         .anyMatch(msg -> msg.startsWith("High-priority")),
                 "Escalation alert should be sent to kitchen manager");
     }
-
-
-
-
 }

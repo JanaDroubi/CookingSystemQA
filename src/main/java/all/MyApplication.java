@@ -75,38 +75,38 @@ public class MyApplication {
         managers.add(new Manager("manager2", "manager2pass", "manager"));
         managers.add(new Manager("manager3", "manager3pass", "manager"));
 
-        chefs.get(1).assignTask1("Grill chicken skewers");
-        chefs.get(1).assignTask1("Cook steak medium-rare");
-        chefs.get(1).assignTask1("Char vegetables for side dish");
-        chefs.get(1).assignTask1("Prepare BBQ sauce");
-        chefs.get(1).assignTask1("Grill lamb chops");
-        chefs.get(1).assignTask1("Smoke brisket");
-        chefs.get(1).assignTask1("Prepare grilled salmon");
-        chefs.get(1).assignTask1("Clean grill after use");
-        chefs.get(1).assignTask1("Prepare grilled pineapple dessert");
-        chefs.get(1).assignTask1("Marinate meat for kebabs");
+        chefs.get(0).assignTask1("Grill chicken skewers");
+        chefs.get(0).assignTask1("Cook steak medium-rare");
+        chefs.get(0).assignTask1("Char vegetables for side dish");
+        chefs.get(0).assignTask1("Prepare BBQ sauce");
+        chefs.get(0).assignTask1("Grill lamb chops");
+        chefs.get(0).assignTask1("Smoke brisket");
+        chefs.get(0).assignTask1("Prepare grilled salmon");
+        chefs.get(0).assignTask1("Clean grill after use");
+        chefs.get(0).assignTask1("Prepare grilled pineapple dessert");
+        chefs.get(0).assignTask1("Marinate meat for kebabs");
 
-        chefs.get(2).assignTask1("Make vegan lasagna");
-        chefs.get(2).assignTask1("Prepare quinoa salad");
-        chefs.get(2).assignTask1("Cook tofu stir-fry");
-        chefs.get(2).assignTask1("Blend green detox smoothie");
-        chefs.get(2).assignTask1("Prepare lentil soup");
-        chefs.get(2).assignTask1("Make vegan burgers");
-        chefs.get(2).assignTask1("Roast chickpeas with spices");
-        chefs.get(2).assignTask1("Prepare cashew cheese spread");
-        chefs.get(2).assignTask1("Assemble rainbow veggie wraps");
-        chefs.get(2).assignTask1("Serve avocado chocolate mousse");
+        chefs.get(1).assignTask1("Make vegan lasagna");
+        chefs.get(1).assignTask1("Prepare quinoa salad");
+        chefs.get(1).assignTask1("Cook tofu stir-fry");
+        chefs.get(1).assignTask1("Blend green detox smoothie");
+        chefs.get(1).assignTask1("Prepare lentil soup");
+        chefs.get(1).assignTask1("Make vegan burgers");
+        chefs.get(1).assignTask1("Roast chickpeas with spices");
+        chefs.get(1).assignTask1("Prepare cashew cheese spread");
+        chefs.get(1).assignTask1("Assemble rainbow veggie wraps");
+        chefs.get(1).assignTask1("Serve avocado chocolate mousse");
 
-        chefs.get(3).assignTask1("Bake chocolate cake");
-        chefs.get(3).assignTask1("Prepare sourdough bread");
-        chefs.get(3).assignTask1("Make croissants");
-        chefs.get(3).assignTask1("Decorate cupcakes");
-        chefs.get(3).assignTask1("Bake apple pie");
-        chefs.get(3).assignTask1("Whip cream for desserts");
-        chefs.get(3).assignTask1("Prepare cheesecake");
-        chefs.get(3).assignTask1("Make cinnamon rolls");
-        chefs.get(3).assignTask1("Pipe icing on cookies");
-        chefs.get(3).assignTask1("Bake gluten-free brownies");
+        chefs.get(2).assignTask1("Bake chocolate cake");
+        chefs.get(2).assignTask1("Prepare sourdough bread");
+        chefs.get(2).assignTask1("Make croissants");
+        chefs.get(2).assignTask1("Decorate cupcakes");
+        chefs.get(2).assignTask1("Bake apple pie");
+        chefs.get(2).assignTask1("Whip cream for desserts");
+        chefs.get(2).assignTask1("Prepare cheesecake");
+        chefs.get(2).assignTask1("Make cinnamon rolls");
+        chefs.get(2).assignTask1("Pipe icing on cookies");
+        chefs.get(2).assignTask1("Bake gluten-free brownies");
 
 
         // 🥦 Mock ingredients
