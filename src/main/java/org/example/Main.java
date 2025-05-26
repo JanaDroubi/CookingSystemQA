@@ -53,7 +53,7 @@ public class Main {
 
 
 
-   private static void chefMenu(MyApplication app, Scanner scanner, String username) {
+    private static void chefMenu(MyApplication app, Scanner scanner, String username) {
    //     System.out.println("\n👨‍🍳 Chef Menu 👨‍🍳");
        while (true) {
        // Login Process
@@ -64,13 +64,13 @@ public class Main {
 
             System.out.println("1️⃣ View Assigned Tasks");
             System.out.println("2️⃣ Update Task Status");
-            System.out.println("3️⃣ Logout");
+            System.out.println("3️⃣ View Past Orders");
             System.out.println("4️⃣ View Custom Meal Requests");
             System.out.println("5️⃣ View Ingredient Availability");
             System.out.println("6️⃣ Suggest Ingredient Substitutions");
             System.out.println("7️⃣ View Customer Preferences");
-            System.out.println("8️⃣ View Past Orders");
-            System.out.println("9️⃣ View Meal Plan Suggestions");
+            System.out.println("8️⃣ View Meal Plan Suggestions");
+            System.out.println("9️⃣ Logout");
 
             System.out.print("\n👨‍🍳 Choose an option: ");
             int choice = scanner.nextInt();
@@ -85,21 +85,20 @@ public class Main {
                     scanner.nextLine();
                     app.completeChefTask(username, taskIndex);
                 }
-                case 3 -> {
-                    System.out.println("👋 Logging out...");
-                    return;
-                }
+                case 3 -> app.viewPastOrders1(username);
                 case 4 -> app.viewCustomMealRequests(username);
                 case 5 -> app.viewIngredientAvailability(username);
                 case 6 -> app.suggestIngredientSubstitutions(username);
-               case 7 -> app.viewCustomerPreferences(username);
-                case 8 -> app.viewPastOrders1(username);
-                case 9 -> app.viewMealPlanSuggestions(username);
+                case 7 -> app.viewCustomerPreferences(username);
+                case 8 -> app.viewMealPlanSuggestions(username);
+                case 9 -> {
+                    System.out.println("👋 Logging out...");
+                    return;
+                }
                 default -> System.out.println("❌ Invalid option. Try again.");
             }
         }
     }
-
     private static void kitchenManagerMenu(MyApplication app, Scanner scanner) {
 
         // Login Process
@@ -109,8 +108,6 @@ public class Main {
             System.out.println("╔═══════════════════════════════════════════════════════════════════════╗");
             System.out.println("                      🍽️ Kitchen Manager Menu 🍽️                        ");
             System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
-
-
             System.out.println("1️⃣ View Inventory");
             System.out.println("2️⃣ Add Ingredient");
             System.out.println("3️⃣ Use Ingredient");
@@ -124,7 +121,7 @@ public class Main {
             scanner.nextLine();
 
             switch (choice) {
-            //    case 1 -> app.showInventory();
+                //  case 1 -> app.showInventory();
                 case 2 -> {
                     System.out.print("📝 Ingredient Name: ");
                     String name = scanner.nextLine();
@@ -147,64 +144,72 @@ public class Main {
                     app.useIngredient(name, qty);
                 }
                 case 4 -> {
-                    System.out.print("📝 Ingredient Name: ");
-                    String name = scanner.nextLine();
-                    System.out.print("📈 Quantity to restock: ");
-                    int qty = scanner.nextInt();
-                    scanner.nextLine();
-                    app.restockIngredient(name, qty);
+                        // Display all ingredients with IDs
+                        System.out.println("📦 Available Ingredients:");
+                        for (int i = 0; i < app.ingredients.size(); i++) {
+                            Ingredient ing = app.ingredients.get(i);
+                            System.out.println((i + 1) + ". " + ing.getName() + " (Qty: " + ing.getQuantity() + ")");
+                        }
+
+                        // Let user choose by ID
+                        System.out.print("🔢 Enter the ID of the ingredient to restock: ");
+                        int id = scanner.nextInt();
+                        scanner.nextLine(); // Consume newline
+
+                        // Validate ID range
+                        if ((id < 1) || (id > app.ingredients.size())) {
+                            System.out.println("❌ Invalid ingredient ID.");
+                            break;
+                        }
+
+                        // Ask for quantity
+                        System.out.print("📈 Quantity to restock: ");
+                        int qty = scanner.nextInt();
+                        scanner.nextLine(); // Consume newline
+
+                        // Restock by ID
+                        app.restockIngredientById(id, qty);
+
+
                 }
                 case 5 -> {
-                    // Fetch and display the available chefs
-                    List<chef> availableChefs = app.getChefs(); // Assuming this returns a list of chef objects
+                    List<chef> availableChefs = app.getChefs();
+
                     if (availableChefs.isEmpty()) {
                         System.out.println("❌ No available chefs.");
                         break;
                     }
 
-                    // Display the available chefs by name
-                    System.out.print("👨‍🍳 Available Chefs: ");
-                    availableChefs.forEach(chef -> System.out.print(chef.getUserName() + " ")); // Assuming the chef class has a getName() method
-                    System.out.println();
-
-                    String chefName = "";
-                    boolean validChef = false;
-
-                    // Get chef name and validate input
-                    while (!validChef) {
-                        System.out.print("👨‍🍳 Enter Chef Name: ");
-                        chefName = scanner.nextLine();
-
-                        // Check if the entered chef name exists in the list
-                        String finalChefName1 = chefName;
-                        validChef = availableChefs.stream()
-                                .anyMatch(chef -> chef.getUserName().equalsIgnoreCase(finalChefName1));
-
-                        if (!validChef) {
-                            System.out.println("❌ Chef not found. Please try again.");
-                        }
+                    // Display unique expertises with IDs
+                    Set<String> uniqueExpertiseSet = new LinkedHashSet<>();
+                    for (chef ch : availableChefs) {
+                        uniqueExpertiseSet.add(ch.getExpertise());
                     }
 
-                    // Get task description
-                    System.out.print("📝 Task Description: ");
+                    List<String> expertiseList = new ArrayList<>(uniqueExpertiseSet);
+                    System.out.println("📚 Available Chef Expertises:");
+                    for (int i = 0; i < expertiseList.size(); i++) {
+                        System.out.println((i + 1) + ". " + expertiseList.get(i));
+                    }
+
+                    System.out.print("🔢 Enter the ID of the expertise to assign a task: ");
+                    int expertiseId = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+
+                    if (expertiseId < 1 || expertiseId > expertiseList.size()) {
+                        System.out.println("❌ Invalid ID. Please try again.");
+                        break;
+                    }
+
+                    String selectedExpertise = expertiseList.get(expertiseId - 1);
+
+                    // Ask user for the task description
+                    System.out.print("📝 Enter the task description: ");
                     String task = scanner.nextLine();
 
-                    // Find the selected chef by name
-                    String finalChefName = chefName;
-                    chef selectedChef = availableChefs.stream()
-                            .filter(chef -> chef.getUserName().equalsIgnoreCase(finalChefName))
-                            .findFirst()
-                            .orElse(null);
-
-                    // Assign task to the selected chef
-                    if (selectedChef != null) {
-                        app.assignTaskToChef(String.valueOf(selectedChef), task);
-                        System.out.println("✅ Task successfully assigned to " + selectedChef.getUserName());
-                    } else {
-                        System.out.println("❌ Error: Chef not found during task assignment.");
-                    }
+                    // Call your method to assign the task
+                    app.assignTaskToChef(task, selectedExpertise);
                 }
-
                 case 6 -> {
                     // Assuming you want to print tasks for all chefs
                     List<chef> allChefs = app.getChefs(); // Get the list of all chefs (assuming app.getChefs() returns a list of chefs)

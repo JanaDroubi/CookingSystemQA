@@ -13,7 +13,7 @@ public class MyApplication {
     //private final List<Person> users;
     public static List<chef> chefs = new ArrayList<>(); // array of ches
     public static List<Manager> managers = new ArrayList<>(); // array of managers
-    public static List<Ingredient> ingredients = new ArrayList<>(); // array of ingredients
+    public static List<Ingredient> ingredients = new ArrayList<>();
     public static List<Supplier> suppliers = new ArrayList<>();
     private static List<CustomerProfile> customers = new ArrayList<>();// array of suppliers
     private static final List<order> pendingOrders = new ArrayList<>();
@@ -716,6 +716,11 @@ public static String viewAssignedTasksForChef(String chefName) {
         public List<Substitution> getSubstitutions() {
             return substitutions;
         }
+    }
+    public void restockIngredientById(int id, int qty) {
+        Ingredient selected = ingredients.get(id - 1); // Adjust for 0-based index
+        selected.IncreaseQuantity(qty);
+        System.out.println("✅ Restocked " + qty + " units of " + selected.getName() + ". New total: " + selected.getQuantity());
     }
 
     public ValidationResult validateIngredients(List<Ingredient> selected, CustomerProfile customer) {
