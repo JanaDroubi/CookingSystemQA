@@ -509,38 +509,6 @@ public static String viewAssignedTasksForChef(String chefName) {
         }
     }
 
-//    public void chefViewOrderHistory() {
-//        if (orderHistory.isEmpty()) {
-//            System.out.println("No customer order history available.");
-//            return;
-//        }
-//
-//       List<CustomerProfile> customers = new ArrayList<>(orderHistory.keySet());
-//        System.out.println("👤 Customers with orders:");
-//        for (int i = 0; i < customers.size(); i++) {
-//            System.out.printf("%d. %s\n", i + 1, customers.get(i).getName());
-//        }
-//
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.print("Choose a customer to view their history: ");
-//        int choice = scanner.nextInt();
-//
-//        if (choice > 0 && choice <= customers.size()) {
-//            CustomerProfile selected = customers.get(choice - 1);
-//            List<meal> history = orderHistory.get(selected);
-//            System.out.println("📦 Order History for " + selected.getName() + ":");
-//           for (meal meal : history) {
-//                System.out.println(" - " + meal);
-//           }
-//        } else {
-//            System.out.println("Invalid choice.");
-//        }
-//    }
-//
-
-
-
-
 
     // Corrected method
     public static void viewChefTasks(String chefName) {
@@ -629,26 +597,10 @@ public static String viewAssignedTasksForChef(String chefName) {
     }
 
 
-//
-//    public void addMealToOrderHistory(CustomerProfile customer, String mealName) {
-//        meal matchedMeal = meals.stream()
-//                .filter(m -> m.getName().equalsIgnoreCase(mealName))
-//                .findFirst()
-//                .orElse(null);
-//
-//        if (matchedMeal == null) {
-//            System.out.println("⚠️ Meal not found: " + mealName);
-//            return;
-//        }
-//
-//        orderHistory.putIfAbsent(customer, new ArrayList<>());
-//        orderHistory.get(customer).add(new order(customer, matchedMeal));
-//
-//        System.out.printf("✅ Order added to %s's history: %s\n", customer.getUserName(), mealName);
-//    }
 
 
-/// ////////////////////يا ولاء ليش معرفة ليست هون
+
+
     public static class ValidationResult {
         private final List<Ingredient> validatedIngredients;
         private final List<Substitution> substitutions;
