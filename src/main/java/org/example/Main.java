@@ -294,9 +294,6 @@ public class Main {
 
 
         // Login Process
-        System.out.println("╔═══════════════════════════════════════════════════════════════════════╗");
-        System.out.println("                      👤 Customer Menu 👤                        ");
-        System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
 
         CustomerProfile customer = app.getProfileByName(username);
         if (customer == null) {
@@ -308,6 +305,12 @@ public class Main {
         Map<String, Double> mealPrices = new HashMap<>(); // Store random prices for each meal name
 
         while (true) {
+
+            // Login Process
+            System.out.println("╔═══════════════════════════════════════════════════════════════════════╗");
+            System.out.println("                      👤 Customer Menu 👤                        ");
+            System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
+
             System.out.println("1️⃣ Set Dietary Preferences and Allergies");
             System.out.println("2️⃣ View Past Orders and Reorder");
             System.out.println("3️⃣ View Suggested Meals and Reorder");
