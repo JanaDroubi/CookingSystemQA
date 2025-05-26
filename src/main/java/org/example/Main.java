@@ -105,16 +105,24 @@ public class Main {
             System.out.println("                      🍽️ Kitchen Manager Menu 🍽️                        ");
             System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
             if (noti==0){
-                   System.out.printf("⚠️ You Have notification");
+                   System.out.println("⚠️ You Have Meal");
                 noti++;
             }
+            if (noti==1){
+                System.out.println("⚠️ You Have pending Meal");
+                noti++;
+            }
+
             System.out.println("1️⃣ View Inventory");
             System.out.println("2️⃣ Add Ingredient");
             System.out.println("3️⃣ Use Ingredient");
             System.out.println("4️⃣ Restock Ingredient");
             System.out.println("5️⃣ Assign Task to Chef");
             System.out.println("6️⃣ View Chef Tasks");
-            System.out.println("7️⃣ Logout");
+            System.out.println("7️⃣ Accept Pendeng orders");
+            System.out.println("8️⃣ Logout");
+
+
 
             System.out.print("🍽️ Choose an option: ");
             int choice = scanner.nextInt();
@@ -123,18 +131,48 @@ public class Main {
             switch (choice) {
                 //  case 1 -> app.showInventory();
                 case 2 -> {
+                    // Show supplier and prices first
+                    if (app.suppliers.isEmpty()) {
+                        System.out.println("❌ No suppliers available.");
+                    } else {
+                        System.out.println("🚚 Available Suppliers and Their Ingredients:");
+
+                        for (Supplier supplier : app.suppliers) {
+                            System.out.println("📦 Supplier: " + supplier.getName());
+
+                            Map<Ingredient, Double> ingredientPrices = supplier.getIngredientPrices();
+                            if (ingredientPrices.isEmpty()) {
+                                System.out.println("   ⚠️ No ingredients listed.");
+                            } else {
+                                for (Map.Entry<Ingredient, Double> entry : ingredientPrices.entrySet()) {
+                                    Ingredient ingredient = entry.getKey();
+                                    double price = entry.getValue();
+                                    System.out.printf("   🥕 %s - $%.2f per unit\n", ingredient.getName(), price);
+                                }
+                            }
+                            System.out.println(); // spacing between suppliers
+                        }
+                    }
+
+                    // Proceed to input ingredient details
                     System.out.print("📝 Ingredient Name: ");
+                    scanner.nextLine(); // Clear any leftover newline
                     String name = scanner.nextLine();
+
                     System.out.print("📦 Quantity: ");
                     int qty = scanner.nextInt();
+
                     System.out.print("⚠️ Threshold: ");
                     int threshold = scanner.nextInt();
-                    System.out.print("📝 Ingredient alternative: ");
-                    String alternative1 = scanner.nextLine();
-                    scanner.nextLine();
-                    app.ingredients.add(new Ingredient(name,qty,threshold,app.findalternative(alternative1)));
 
+                    scanner.nextLine(); // clear newline
+                    System.out.print("📝 Ingredient Alternative: ");
+                    String alternative1 = scanner.nextLine();
+
+                    app.ingredients.add(new Ingredient(name, qty, threshold, app.findalternative(alternative1)));
+                    System.out.println("✅ Ingredient added successfully.");
                 }
+
                 case 3 -> {
                     System.out.print("📝 Ingredient Name: ");
                     String name = scanner.nextLine();
@@ -217,6 +255,7 @@ public class Main {
                         System.out.println("❌ No chefs available.");
                     } else {
                         for (chef ch : allChefs) {
+                            if(!ch.getUserName().equalsIgnoreCase("alice")){
                             System.out.println("👨‍🍳 Chef: " + ch.getUserName());
 
                             List<String> tasks = ch.getAssignedTasks(); // Get tasks directly from the chef object
@@ -229,15 +268,22 @@ public class Main {
                                 }
                             }
                             System.out.println(); // For readability
-                        }
+                        }}
                     }
                 }
-
-
                 case 7 -> {
+                    System.out.println("📋 Accept Pendeng Orders");
+                    System.out.print("🔢 Enter the ID of the Pendeng orders :");
+                    scanner.nextLine(); // Consume newline
+                    System.out.println("✅ Orders Accepted ");
+
+                }
+                case 8 -> {
                     System.out.println("👋 Logging out...");
                     return;
                 }
+
+
                 default -> System.out.println("❌ Invalid option. Try again.");
             }
         }
