@@ -79,6 +79,7 @@ public class Main {
             switch (choice) {
                 case 1 -> app.viewChefTasks(username);
                 case 2 -> {
+                    app.viewChefTasks(username);
                     System.out.print("✏️ Enter task number to mark as complete: ");
                     int taskIndex = scanner.nextInt();
                     scanner.nextLine();
@@ -92,7 +93,7 @@ public class Main {
                 case 5 -> app.viewIngredientAvailability(username);
                 case 6 -> app.suggestIngredientSubstitutions(username);
                case 7 -> app.viewCustomerPreferences(username);
-                case 8 -> app.viewPastOrders(username);
+                case 8 -> app.viewPastOrders1(username);
                 case 9 -> app.viewMealPlanSuggestions(username);
                 default -> System.out.println("❌ Invalid option. Try again.");
             }

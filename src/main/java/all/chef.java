@@ -6,9 +6,9 @@ import java.util.List;
 public class chef extends Person {
 
     private String expertise;
-    private List<String> assignedTasks = new ArrayList<>();
-    private List<String> notifications = new ArrayList<>();
-
+    public List<String> assignedTasks = new ArrayList<>();
+    public List<String> notifications = new ArrayList<>();
+    public List<String> pastorder = new ArrayList<>();
     // Constructor
     public chef(String userName, String expertise, String pass, String role) {
         super(userName, pass, role);
@@ -32,6 +32,14 @@ public class chef extends Person {
         notifications.add(message);
         System.out.println("🔔 " + message + " to " + getUserName());
     }
+    public boolean removeTask(int index) {
+        if (index >= 0 && index < assignedTasks.size()) {
+            assignedTasks.remove(index);
+            return true;
+        }
+        return false;
+    }
+
     public void assignTask1(String task) {
         assignedTasks.add(task);
         String message = "Task assigned: " + task;
