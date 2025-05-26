@@ -101,14 +101,16 @@ public class Main {
     }
 
     private static void kitchenManagerMenu(MyApplication app, Scanner scanner) {
-        System.out.println("\n🍽️ Kitchen Manager Menu 🍽️");
-        // Login Process
-        System.out.println("╔═══════════════════════════════════════════════════════════════════════╗");
-        System.out.println("                      🍽️ Kitchen Manager Menu 🍽️                        ");
-        System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
 
+        // Login Process
 
         while (true) {
+
+            System.out.println("╔═══════════════════════════════════════════════════════════════════════╗");
+            System.out.println("                      🍽️ Kitchen Manager Menu 🍽️                        ");
+            System.out.println("╚═══════════════════════════════════════════════════════════════════════╝");
+
+
             System.out.println("1️⃣ View Inventory");
             System.out.println("2️⃣ Add Ingredient");
             System.out.println("3️⃣ Use Ingredient");

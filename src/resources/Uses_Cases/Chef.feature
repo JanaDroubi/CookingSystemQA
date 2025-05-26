@@ -129,3 +129,20 @@ Feature: Chef Task Management
     Then the task "Prepare Salad" should be marked as completed
     And the remaining tasks should be:
       | Cook Steak |
+
+
+  Scenario: View tasks assigned to a chef
+    Given a chef named "chef1" has tasks assigned
+    When I view tasks for "chef1"
+    Then I should see the list of current tasks
+
+  Scenario: Complete a task for a chef
+    Given a chef named "chef1" has tasks assigned
+    When I complete task number 1 for "chef1"
+    Then the task should be removed from current tasks
+    And the task should appear in the past orders of "chef1"
+
+  Scenario: View past orders for a chef
+    Given a task was completed for "chef1"
+    When I view past orders for "chef1"
+    Then I should see the list of past tasks
