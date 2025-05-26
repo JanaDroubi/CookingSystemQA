@@ -40,7 +40,7 @@ public class MyApplication {
         chef alice = new chef("Alice", "Italian Cuisine", "password123", "Chef");
         alice.assignTask1("Prepare Salad");
         alice.assignTask1("Cook Steak");
-       // chefs.add(alice);
+        chefs.add(alice);
     }
 
     public MyApplication() {
@@ -213,6 +213,11 @@ public class MyApplication {
         suppliers.add(supplier1);
         suppliers.add(supplier2);
         suppliers.add(supplier3);
+
+        addOrderToHistory(mark, veganBowl);
+        addOrderToHistory(mark, glutenFreePasta);
+        addOrderToHistory(mark,  chickpeaStirFry);
+        addOrderToHistory(mark, proteinShake);
 
 
 
@@ -451,32 +456,7 @@ public static String viewAssignedTasksForChef(String chefName) {
     }
 
 
-//    public List<Ingredient> validateIngredients(List<Ingredient> selected, CustomerProfile customer) {
-//        List<Ingredient> finalList = new ArrayList<>();
-//
-//        for (Ingredient ing : selected) {
-//            boolean unavailable = ing.getQuantity() < ing.getThreshold();
-//            boolean allergic = ing.getName().equalsIgnoreCase(customer.getAllergy());
-//
-//            if (unavailable || allergic) {
-//                if (ing.getAlternative() != null) {
-//                    System.out.printf("⚠️ '%s' is %s. Suggested: %s%n",
-//                            ing.getName(),
-//                            allergic ? "an allergen" : "out of stock",
-//                            ing.getAlternative().getName());
-//
-//                    alertChef(customer, ing, ing.getAlternative());
-//                    finalList.add(ing.getAlternative());  // apply substitution
-//                } else {
-//                    System.out.printf("❌ No substitute available for '%s'. Removing it.%n", ing.getName());
-//                }
-//            } else {
-//                finalList.add(ing);
-//            }
-//        }
-//
-//        return finalList;
-//    }
+
 
     private void alertChef(CustomerProfile customer, Ingredient original, Ingredient substitute) {
         System.out.printf("👨‍🍳 Chef Alert: %s's order substituted %s with %s.%n", customer.getUserName(), original.getName(), substitute.getName());
@@ -582,9 +562,7 @@ public static String viewAssignedTasksForChef(String chefName) {
         return chefs;
     }
 
-    //public void setChefs(List<chef> chefs) {
-     //   this.chefs = chefs;
-   // }
+
 
 
     public Ingredient findalternative (String name ) {
@@ -947,6 +925,23 @@ public static String viewAssignedTasksForChef(String chefName) {
     public List<String> getNotificationLog() {
         return new ArrayList<>(notificationLog);
     }
+
+
+    public void addOrderToHistory(CustomerProfile customer, meal orderedMeal) {
+        if (customer == null || orderedMeal == null) {
+            message = "Customer or meal cannot be null";
+            return;
+        }
+
+        // Create a new order object if needed, or use an existing order class
+        order newOrder = new order(customer, orderedMeal);
+
+        // Add to order history
+        orderHistory.computeIfAbsent(customer, k -> new ArrayList<>()).add(newOrder);
+        message = "Order for " + orderedMeal.getName() + " added to " + customer.getUserName() + "'s history";
+    }
+
+
 
 
 
