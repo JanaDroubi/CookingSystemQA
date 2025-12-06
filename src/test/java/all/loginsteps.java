@@ -42,7 +42,6 @@ public class loginsteps {
     @Then("login should succeed for {string}")
     public void login_should_succeed_for(String username) {
         assertTrue( obj.getValidation());
-      //  assertEquals("Logged in username mismatch", username, obj.getLoggedInUserRole().getRole());
     }
 
     @Then("the user should be redirected to the {string} dashboard")

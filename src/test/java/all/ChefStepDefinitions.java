@@ -175,31 +175,6 @@ public class ChefStepDefinitions {
     public void the_system_displays_meal_plan_suggestions() {
         System.out.println("Meal plan suggestions displayed successfully.");
     }
-//
-//    // ===== View assigned cooking tasks steps =====
-//    @Given("a chef is logged into the system")
-//    public void chefIsLoggedIn() {
-//        = obj.viewChefTasks("Alice");
-//        System.out.println("Chef is logged into the system");
-//    }
-//
-//    @When("they check their task list")
-//    public void checkTaskList() {
-//        System.out.printf("%s checks their task list%n", chefName);
-//    }
-//
-//    @Then("the system should display all assigned tasks")
-//    public void displayAssignedTasks() {
-//        System.out.printf("Displaying task: %s%n", assignedTask);
-//        assertNotNull("Task should not be null", assignedTask);
-//    }
-//
-//    @And("notify the chef of upcoming cooking deadlines")
-//    public void notifyUpcomingDeadlines() {
-//        System.out.printf("Notification sent: %s%n", notificationStatus);
-//        Assert.assertEquals("Notification should be received", "Yes", notificationStatus);
-//    }
-
 
 
     // Step to simulate logging in a chef
@@ -392,7 +367,6 @@ public class ChefStepDefinitions {
 
     @Then("the task should be removed from current tasks")
     public void the_task_should_be_removed_from_current_tasks() {
-      //  assertFalse("Task should be removed", currentChef.getAssignedTasks().contains(lastCompletedTask));
     }
 
     @Then("the task should appear in the past orders of {string}")
